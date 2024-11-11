@@ -33,6 +33,14 @@ public class Review {
     @Column(name = "id")
     private Long id;
 
+    @JoinColumn(name = "user_id", nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY)
+    private User user;
+
+    @JoinColumn(name = "place_id", nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Place place;
+
     @Column(name = "content", nullable = false)
     private String content;
 
@@ -45,14 +53,6 @@ public class Review {
 
     @Column(name = "review_image_url")
     private String reviewImageUrl;
-
-    @JoinColumn(name = "user_id", nullable = false)
-    @ManyToOne(fetch = FetchType.LAZY)
-    private User user;
-
-    @JoinColumn(name = "place_id", nullable = false)
-    @ManyToOne(fetch = FetchType.LAZY)
-    private Place place;
 
     @Builder
     public Review(String content, BigDecimal rating, String reviewImageUrl, User user, Place place) {

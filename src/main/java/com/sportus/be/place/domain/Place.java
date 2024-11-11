@@ -34,9 +34,6 @@ public class Place {
     @Column(name = "name", nullable = false)
     private String name;
 
-    @Column(name = "region", nullable = false)
-    private String region;
-
     @Enumerated(EnumType.STRING)
     @Column(name = "facility_category")
     private FacilityCategory facilityCategory;
@@ -54,23 +51,22 @@ public class Place {
     @Column(name = "close_time", nullable = false)
     private LocalTime closeTime;
 
-    @Column(name = "rest_info", nullable = false)
-    private String restInfo;
+    @Column(name = "detail_info", nullable = false)
+    private String detailInfo;
 
     @Column(name = "location", nullable = false, columnDefinition = "POINT SRID 4326")
     private Point location;
 
     @Builder
-    public Place(String name, String region, FacilityCategory facilityCategory, LectureCategory lectureCategory,
-                 String address, LocalTime openTime, LocalTime closeTime, String restInfo, Point location) {
+    public Place(String name, FacilityCategory facilityCategory, LectureCategory lectureCategory,
+                 String address, LocalTime openTime, LocalTime closeTime, String detailInfo, Point location) {
         this.name = name;
-        this.region = region;
         this.facilityCategory = facilityCategory;
         this.lectureCategory = lectureCategory;
         this.address = address;
         this.openTime = openTime;
         this.closeTime = closeTime;
-        this.restInfo = restInfo;
+        this.detailInfo = detailInfo;
         this.location = location;
     }
 }
