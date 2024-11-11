@@ -3,7 +3,7 @@ package com.sportus.be;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
-@SpringBootTest
+@SpringBootTest(classes = BeApplication.class)
 class BeApplicationTests {
 
 	@Test
