@@ -1,7 +1,7 @@
 package com.sportus.be.auth.presentation.filter;
 
 import com.sportus.be.auth.util.AuthenticationUtil;
-import com.sportus.be.global.util.JwtTokenProvider;
+import com.sportus.be.auth.util.JwtTokenProvider;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

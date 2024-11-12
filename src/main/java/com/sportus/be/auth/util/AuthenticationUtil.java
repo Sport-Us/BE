@@ -1,6 +1,5 @@
 package com.sportus.be.auth.util;
 
-import com.sportus.be.global.util.JwtTokenProvider;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;

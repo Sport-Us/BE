@@ -1,7 +1,7 @@
 package com.sportus.be.auth.handler;
 
 import com.sportus.be.auth.dto.CustomOAuth2User;
-import com.sportus.be.global.util.JwtTokenProvider;
+import com.sportus.be.auth.util.JwtTokenProvider;
 import com.sportus.be.user.domain.User;
 import com.sportus.be.user.repository.UserRepository;
 import jakarta.servlet.http.HttpServletRequest;
