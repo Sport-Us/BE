@@ -57,9 +57,6 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
         if (Provider.NAVER.getType().equals(registrationId)) {
             return Provider.NAVER;
         }
-        if (Provider.KAKAO.getType().equals(registrationId)) {
-            return Provider.KAKAO;
-        }
 
         return Provider.SELF;
     }
@@ -69,8 +66,11 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
      * 저장한다.
      */
     private User getOrGenerateUser(OAuthAttributes attributes) {
-        return userRepository.findByProviderAndSocialId(attributes.oauth2UserInfo().getOAuthProvider(),
-                        attributes.oauth2UserInfo().getSocialId())
+
+        log.info("attributes: {}", attributes);
+
+        return userRepository.findByProviderAndSocialId(
+                        attributes.oauth2UserInfo().getOAuthProvider(), attributes.oauth2UserInfo().getSocialId())
                 .orElseGet(() -> userRepository.save(attributes.toEntity(attributes.oauth2UserInfo())));
     }
 }

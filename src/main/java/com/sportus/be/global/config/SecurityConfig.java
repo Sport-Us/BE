@@ -35,10 +35,6 @@ public class SecurityConfig {
             "/webjars/**",
             "/auth/**",
             "/global/health-check",
-            "/places/**",
-            "/reviews/*",
-            "/card-news/**",
-            "/feign/**",
             "/actuator/**"
     };
 
