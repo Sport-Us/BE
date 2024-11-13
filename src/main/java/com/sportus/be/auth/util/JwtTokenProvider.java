@@ -6,7 +6,6 @@ import com.sportus.be.auth.application.type.JwtProperties;
 import com.sportus.be.auth.application.type.JwtUserDetails;
 import com.sportus.be.auth.dto.CustomOAuth2User;
 import com.sportus.be.user.domain.User;
-import com.sportus.be.user.domain.type.Role;
 import com.sportus.be.user.exception.UserNotFoundException;
 import com.sportus.be.user.repository.UserRepository;
 import io.jsonwebtoken.Claims;
@@ -129,9 +128,6 @@ public class JwtTokenProvider {
                 .parseClaimsJws(token)
                 .getBody();
 
-        return JwtUserDetails.builder()
-                .userId(Long.parseLong(claims.getSubject()))
-                .role(claims.get(USER_ROLE, Role.class))
-                .build();
+        return JwtUserDetails.from(claims);
     }
 }

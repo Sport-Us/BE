@@ -13,7 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
-@Profile({"local"})
+@Profile({"local", "prod"})
 @Transactional
 @Component
 public @interface DummyDataInit {

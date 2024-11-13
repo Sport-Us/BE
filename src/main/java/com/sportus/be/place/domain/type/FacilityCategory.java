@@ -4,5 +4,6 @@ public enum FacilityCategory {
     PUBLIC,
     SCHOOL,
     DISABLED,
-    PRIVATE
+    PRIVATE,
+    ;
 }

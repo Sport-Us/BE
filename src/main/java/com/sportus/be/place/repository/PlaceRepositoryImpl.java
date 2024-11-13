@@ -155,7 +155,8 @@ public class PlaceRepositoryImpl implements PlaceRepositoryCustom {
                                 place.id,
                                 place.name,
                                 place.address,
-                                place.lectureCategory != null ? place.lectureCategory : place.facilityCategory,
+                                place.facilityCategory,
+                                place.lectureCategory,
                                 place.detailInfo,
                                 review.rating.avg().coalesce(0.0), // 평균 평점
                                 bookMark.id.isNotNull() // userId가 존재하는지 확인

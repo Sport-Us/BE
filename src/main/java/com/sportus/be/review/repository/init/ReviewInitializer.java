@@ -1,4 +1,4 @@
-package com.sportus.be.review.domain.init;
+package com.sportus.be.review.repository.init;
 
 import com.sportus.be.global.util.DummyDataInit;
 import com.sportus.be.place.domain.Place;
@@ -31,9 +31,9 @@ public class ReviewInitializer implements ApplicationRunner {
         if (reviewRepository.count() > 0) {
             log.info("[Review]더미 데이터 존재");
         } else {
-            Place place1 = placeRepository.findById(506L).orElseThrow();
-            Place place2 = placeRepository.findById(2611L).orElseThrow();
-            Place place3 = placeRepository.findById(511L).orElseThrow();
+            Place place1 = placeRepository.findById(8475L).orElseThrow();
+            Place place2 = placeRepository.findById(49732L).orElseThrow();
+            Place place3 = placeRepository.findById(49731L).orElseThrow();
 
             User user1 = userRepository.findById(1L).orElseThrow();
             User user2 = userRepository.findById(2L).orElseThrow();
