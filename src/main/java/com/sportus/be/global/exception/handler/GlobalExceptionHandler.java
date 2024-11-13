@@ -1,11 +1,16 @@
 package com.sportus.be.global.exception.handler;
 
+import com.sportus.be.cardnews.exception.CardNewsNotFoundException;
 import com.sportus.be.global.exception.FileConvertFailException;
 import com.sportus.be.global.exception.errorcode.ErrorCode;
 import com.sportus.be.global.exception.errorcode.GlobalErrorCode;
 import com.sportus.be.global.exception.response.ErrorResponse;
 import com.sportus.be.global.exception.response.ErrorResponse.ValidationError;
 import com.sportus.be.global.exception.response.ErrorResponse.ValidationErrors;
+import com.sportus.be.place.exception.PlaceNotFoundException;
+import com.sportus.be.review.exception.CanNotDeleteReviewException;
+import com.sportus.be.review.exception.ReviewNotFoundException;
+import com.sportus.be.user.exception.UserNotFoundException;
 import jakarta.servlet.http.HttpServletRequest;
 import java.util.List;
 import org.slf4j.Logger;
@@ -29,6 +34,34 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     private static final Logger log = LoggerFactory.getLogger("ErrorLogger");
     private static final String LOG_FORMAT_INFO = "\n[🔵INFO] - ({} {})\n(id: {}, role: {})\n{}\n {}: {}";
     private static final String LOG_FORMAT_ERROR = "\n[🔴ERROR] - ({} {})\n(id: {}, role: {})";
+
+    @ExceptionHandler(UserNotFoundException.class)
+    public ResponseEntity<Object> handleUserNotFound(final UserNotFoundException e) {
+        return handleExceptionInternal(e.getErrorCode());
+    }
+
+    @ExceptionHandler(CardNewsNotFoundException.class)
+    public ResponseEntity<Object> handleCardNewsNotFound(final CardNewsNotFoundException e) {
+        return handleExceptionInternal(e.getErrorCode());
+    }
+
+    @ExceptionHandler(PlaceNotFoundException.class)
+    public ResponseEntity<Object> handlePlaceNotFound(PlaceNotFoundException e, HttpServletRequest request) {
+        logInfo(e.getErrorCode(), e, request);
+        return handleExceptionInternal(e.getErrorCode());
+    }
+
+    @ExceptionHandler(CanNotDeleteReviewException.class)
+    public ResponseEntity<Object> handleCanNotDeleteReview(CanNotDeleteReviewException e, HttpServletRequest request) {
+        logInfo(e.getErrorCode(), e, request);
+        return handleExceptionInternal(e.getErrorCode());
+    }
+
+    @ExceptionHandler(ReviewNotFoundException.class)
+    public ResponseEntity<Object> handleReviewNotFound(ReviewNotFoundException e, HttpServletRequest request) {
+        logInfo(e.getErrorCode(), e, request);
+        return handleExceptionInternal(e.getErrorCode());
+    }
 
     @ExceptionHandler(FileConvertFailException.class)
     public ResponseEntity<Object> handleFileConvertFail(FileConvertFailException e, HttpServletRequest request) {
