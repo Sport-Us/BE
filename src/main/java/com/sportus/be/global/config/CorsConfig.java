@@ -19,7 +19,6 @@ public class CorsConfig {
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration config = new CorsConfiguration();
 
-        config.setAllowCredentials(true);
         config.setAllowedOrigins(List.of(allowedOrigins));
         config.setAllowedMethods(List.of(
                 HttpMethod.POST.name(),
@@ -30,6 +29,7 @@ public class CorsConfig {
                 HttpMethod.OPTIONS.name()));
         config.setAllowedHeaders(List.of("*"));
         config.setExposedHeaders(List.of("Authorization", "Set-Cookie", "REFRESH_TOKEN"));
+        config.setAllowCredentials(true);
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", config);

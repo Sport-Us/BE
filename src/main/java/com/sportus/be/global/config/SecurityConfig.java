@@ -3,6 +3,8 @@ package com.sportus.be.global.config;
 import com.sportus.be.auth.application.CustomOAuth2UserService;
 import com.sportus.be.auth.handler.OAuth2LoginFailureHandler;
 import com.sportus.be.auth.handler.OAuth2LoginSuccessHandler;
+import com.sportus.be.auth.presentation.filter.JwtAccessDeniedHandler;
+import com.sportus.be.auth.presentation.filter.JwtAuthenticationEntryPoint;
 import com.sportus.be.auth.presentation.filter.JwtAuthenticationFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -26,6 +28,8 @@ public class SecurityConfig {
     private final OAuth2LoginSuccessHandler oAuth2LoginSuccessHandler;
     private final OAuth2LoginFailureHandler oAuth2LoginFailureHandler;
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
+    private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
+    private final JwtAccessDeniedHandler jwtAccessDeniedHandler;
 
     private final String[] WHITE_LIST = {
             "/error",
@@ -49,6 +53,11 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth // 요청에 대한 인증 설정
                         .requestMatchers(WHITE_LIST).permitAll()
                         .anyRequest().authenticated())  //이외의 요청은 전부 인증 필요
+                .exceptionHandling(exceptionHandling -> {
+                    exceptionHandling
+                            .authenticationEntryPoint(jwtAuthenticationEntryPoint) //인증되지 않은 사용자가 보호된 리소스에 액세스 할 때 호출
+                            .accessDeniedHandler(jwtAccessDeniedHandler); //권한이 없는 사용자가 보호된 리소스에 액세스 할 때 호출
+                })
                 .oauth2Login(oauth ->
                         oauth.userInfoEndpoint(userInfo -> userInfo.userService(customOAuth2UserService))
                                 .successHandler(oAuth2LoginSuccessHandler)
