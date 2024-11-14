@@ -51,4 +51,8 @@ public enum LectureCategory {
         }
         return null;
     }
+
+    public static LectureCategory fromString(String name) {
+        return LectureCategory.valueOf(name.toUpperCase());
+    }
 }

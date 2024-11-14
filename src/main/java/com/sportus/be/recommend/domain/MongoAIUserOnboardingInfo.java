@@ -1,4 +1,4 @@
-package com.sportus.be.ai.domain;
+package com.sportus.be.recommend.domain;
 
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -10,22 +10,22 @@ import org.springframework.data.mongodb.core.mapping.MongoId;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Document(collection = "ai_analysis")
-public class MongoAISearchInfo {
+@Document(collection = "ai_user_onboarding_info")
+public class MongoAIUserOnboardingInfo {
 
     @MongoId
     @Field(name = "_id")
     private String id;
 
-    @Field(name = "user_id")
-    private Long userId;
+    @Field(name = "onboarding_type")
+    private String onboardingType;
 
-    @Field(name = "place_id")
-    private Long placeId;
+    @Field(name = "content")
+    private String content;
 
     @Builder
-    public MongoAISearchInfo(Long userId, Long placeId) {
-        this.userId = userId;
-        this.placeId = placeId;
+    public MongoAIUserOnboardingInfo(String onboardingType, String content) {
+        this.onboardingType = onboardingType;
+        this.content = content;
     }
 }

@@ -67,7 +67,7 @@ public class PlaceController {
     }
 
     @Operation(summary = "장소 검색", description =
-            "경도, 위도, 카테고리, 정렬 기준을 기반으로 검색, page는 0부터 시작, hasNext가 false이면 다음 데이터 X<br>>" +
+            "경도, 위도, 카테고리, 정렬 기준을 기반으로 검색, page는 0부터 시작, hasNext가 false이면 다음 데이터 X<br>" +
                     "예시 데이터 경도: 127.0965824, 위도: 37.47153792 - 서울특별시 강남구 자곡로 116")
     @GetMapping("/search/facilities")
     public ResponseEntity<ResponseTemplate<?>> searchFacilities(
@@ -81,7 +81,7 @@ public class PlaceController {
             @RequestParam(defaultValue = "10") Integer size) {
 
         SearchPlaceResponseList nearestPlaces =
-                placeService.findNearestFacilityPlaces(longitude, latitude, maxDistance, category, sortType, keyword,
+                placeService.searchFacilityPlaces(longitude, latitude, maxDistance, category, sortType, keyword,
                         page, size);
 
         return ResponseEntity
@@ -90,7 +90,7 @@ public class PlaceController {
     }
 
     @Operation(summary = "강좌 검색", description =
-            "경도, 위도, 카테고리, 정렬 기준을 기반으로 검색, page는 0부터 시작, hasNext가 false이면 다음 데이터 X<br>>" +
+            "경도, 위도, 카테고리, 정렬 기준을 기반으로 검색, page는 0부터 시작, hasNext가 false이면 다음 데이터 X<br>" +
                     "예시 데이터 경도: 127.0965824, 위도: 37.47153792 - 서울특별시 강남구 자곡로 116")
     @GetMapping("/search/lectures")
     public ResponseEntity<ResponseTemplate<?>> searchLectures(
@@ -104,7 +104,7 @@ public class PlaceController {
             @RequestParam(defaultValue = "10") Integer size) {
 
         SearchPlaceResponseList nearestPlaces =
-                placeService.findNearestLecturePlaces(longitude, latitude, maxDistance, category, sortType, keyword,
+                placeService.searchLecturePlaces(longitude, latitude, maxDistance, category, sortType, keyword,
                         page, size);
 
         return ResponseEntity

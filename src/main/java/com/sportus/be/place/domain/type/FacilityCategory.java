@@ -6,4 +6,8 @@ public enum FacilityCategory {
     DISABLED,
     PRIVATE,
     ;
+
+    public static FacilityCategory fromString(String value) {
+        return FacilityCategory.valueOf(value.toUpperCase());
+    }
 }

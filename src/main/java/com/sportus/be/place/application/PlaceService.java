@@ -47,7 +47,7 @@ public class PlaceService {
     }
 
     // 특정 조건 시설 검색
-    public SearchPlaceResponseList findNearestFacilityPlaces(
+    public SearchPlaceResponseList searchFacilityPlaces(
             double longitude, double latitude, int maxDistant, List<FacilityCategory> categoryList, SortType sortType,
             String keyword, long page, long size) {
 
@@ -59,7 +59,7 @@ public class PlaceService {
     }
 
     // 특정 조건 강좌 검색
-    public SearchPlaceResponseList findNearestLecturePlaces(
+    public SearchPlaceResponseList searchLecturePlaces(
             double longitude, double latitude, int maxDistant, List<LectureCategory> categoryList, SortType sortType,
             String keyword, long page, long size) {
 
@@ -71,11 +71,10 @@ public class PlaceService {
                 .map(Enum::name), page, longitude, latitude, maxDistant, keyword, sortType);
     }
 
-    private static SearchPlaceResponseList getSearchPlaceResponseList(List<SearchPlaceResponse> allSearchResult,
-                                                                      long size,
-                                                                      Stream<String> categoryList, long page,
-                                                                      double longitude, double latitude, int maxDistant,
-                                                                      String keyword, SortType sortType) {
+    private static SearchPlaceResponseList getSearchPlaceResponseList(
+            List<SearchPlaceResponse> allSearchResult, long size, Stream<String> categoryList, long page,
+            double longitude, double latitude, int maxDistant, String keyword, SortType sortType
+    ) {
         // hasNext 계산: 현재 페이지의 데이터 수가 10개이고 전체 데이터 수가 page가 끝나는 지점보다 클 경우 false
         boolean hasNext = allSearchResult.size() == size + 1;
 
