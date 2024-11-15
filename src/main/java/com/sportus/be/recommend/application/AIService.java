@@ -35,7 +35,7 @@ public class AIService {
         Collections.shuffle(mongoUserResponses);
 
         return mongoUserResponses.stream()
-                .limit(15)
+                .limit(8)
                 .toList();
     }
 }
