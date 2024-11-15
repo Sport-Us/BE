@@ -2,7 +2,9 @@ package com.sportus.be.recommend.presentation;
 
 import com.sportus.be.global.dto.ResponseTemplate;
 import com.sportus.be.place.dto.response.SearchPlaceResponseList;
+import com.sportus.be.recommend.application.AIService;
 import com.sportus.be.recommend.application.AIServiceFacade;
+import com.sportus.be.recommend.dto.response.MongoUserResponseList;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -22,6 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/recommend")
 public class RecommendController {
 
+    private final AIService aiService;
     private final AIServiceFacade aiServiceFacade;
 
     @Operation(summary = "장소 추천", description =
@@ -56,5 +59,11 @@ public class RecommendController {
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(ResponseTemplate.from(nearestPlaces));
+    }
+
+    @Operation(summary = "모든 MongoUser 가져오기", description = "모든 MongoUser 가져오기")
+    @GetMapping("/mongo-users")
+    public MongoUserResponseList getAllMongoUsers() {
+        return MongoUserResponseList.from(aiService.getAllMongoUsers());
     }
 }

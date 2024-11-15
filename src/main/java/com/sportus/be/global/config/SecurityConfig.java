@@ -39,7 +39,8 @@ public class SecurityConfig {
             "/webjars/**",
             "/auth/**",
             "/global/health-check",
-            "/actuator/**"
+            "/actuator/**",
+            "/recommend/mongo-users"
     };
 
     @Bean
