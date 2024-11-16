@@ -1,7 +1,6 @@
 package com.sportus.be.recommend.application;
 
 import com.sportus.be.recommend.application.type.ClovaStudioProperties;
-import com.sportus.be.recommend.domain.MongoAISearchInfo;
 import com.sportus.be.recommend.domain.MongoUser;
 import com.sportus.be.recommend.dto.request.AIRecommendRequest;
 import com.sportus.be.recommend.dto.request.OnboardingAnalysisInfo;
@@ -33,6 +32,8 @@ public class AIService {
 
         String query = makeRecommendQuery(mongoUser, isFacility);
 
+        log.info("query: {}", query);
+
         return clovaStudioClient.getFinalAnswer(
                 clovaStudioProperties.studioApiKey(),
                 clovaStudioProperties.apigwApiKey(),
@@ -42,9 +43,12 @@ public class AIService {
     }
 
     private String makeRecommendQuery(MongoUser mongoUser, Boolean isFacility) {
-        String query = mongoUser.getAiSearchInfoList().stream()
-                .filter(mongoAISearchInfo -> mongoAISearchInfo.getIsFacility() == isFacility)
-                .map(MongoAISearchInfo::getPlaceCategory)
+        String query = mongoUser.getAiUserOnboardingInfoList().stream()
+                .map(aiUserOnboardingInfo -> {
+                    String onboardingType = aiUserOnboardingInfo.getOnboardingType();
+                    String content = aiUserOnboardingInfo.getContent();
+                    return onboardingType + "은 " + content;
+                })
                 .collect(Collectors.joining(","));
 
         if (isFacility) {
