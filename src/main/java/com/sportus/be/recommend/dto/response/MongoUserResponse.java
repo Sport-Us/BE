@@ -5,8 +5,7 @@ import java.util.List;
 
 public record MongoUserResponse(
         Long userId,
-        List<MongoAISearchInfoResponse> aiSearchInfoList,
-        List<MongoAIUserOnboardingInfoResponse> aiUserOnboardingInfoList
+        List<MongoAISearchInfoResponse> aiSearchInfoList
 ) {
 
     public static MongoUserResponse from(MongoUser domain) {
@@ -15,11 +14,7 @@ public record MongoUserResponse(
                 domain.getAiSearchInfoList() != null ?
                         domain.getAiSearchInfoList().stream()
                                 .map(MongoAISearchInfoResponse::from)
-                                .toList() : List.of(), // 빈 리스트
-                domain.getAiUserOnboardingInfoList() != null ?
-                        domain.getAiUserOnboardingInfoList().stream()
-                                .map(MongoAIUserOnboardingInfoResponse::from)
-                                .toList() : List.of()  // 빈 리스트
+                                .toList() : List.of()
         );
     }
 }

@@ -63,7 +63,10 @@ public class RecommendController {
 
     @Operation(summary = "모든 MongoUser 가져오기", description = "모든 MongoUser 가져오기")
     @GetMapping("/mongo-users")
-    public MongoUserResponseList getAllMongoUsers() {
-        return MongoUserResponseList.from(aiService.getAllMongoUsers());
+    public MongoUserResponseList getAllMongoUsers(
+            @RequestParam String onboardingType,
+            @RequestParam String content
+    ) {
+        return MongoUserResponseList.from(aiService.getMongoUsers(onboardingType, content));
     }
 }
