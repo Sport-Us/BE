@@ -47,7 +47,7 @@ public class UserInitializer implements ApplicationRunner {
                     .birthDate(LocalDate.of(1990, 1, 1))
                     .gender(Gender.MALE)
                     .role(Role.USER)
-                    .isOnboarded(false)
+                    .isOnboarded(true)
                     .build();
 
             User DUMMY_USER1 = User.builder()
@@ -78,7 +78,9 @@ public class UserInitializer implements ApplicationRunner {
             userList.add(DUMMY_USER1);
             userList.add(DUMMY_USER2);
 
-            userRepository.saveAll(userList);
+            for (int i = 0; i < 10; i++) {
+                userRepository.saveAll(userList);
+            }
         }
     }
 }
