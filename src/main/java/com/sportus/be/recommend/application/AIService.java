@@ -1,6 +1,7 @@
 package com.sportus.be.recommend.application;
 
 import com.sportus.be.place.dto.response.AIRecommendResponse;
+import com.sportus.be.recommend.dto.request.OnboardingAnalysisInfo;
 import com.sportus.be.recommend.dto.response.MongoUserResponse;
 import com.sportus.be.recommend.repository.mongo.MongoUserRepository;
 import java.util.List;
@@ -25,8 +26,8 @@ public class AIService {
         return null;
     }
 
-    public List<MongoUserResponse> getMongoUsers(String onboardingType, String content) {
-        return mongoUserRepository.findByOnboardingInfo(onboardingType, content).stream()
+    public List<MongoUserResponse> getMongoUsers(List<OnboardingAnalysisInfo> onboardingInfoList) {
+        return mongoUserRepository.findByOnboardingInfo(onboardingInfoList).stream()
                 .map(MongoUserResponse::from)
                 .toList();
     }
