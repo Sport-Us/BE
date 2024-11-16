@@ -40,7 +40,7 @@ public class RecommendController {
             @RequestParam Double latitude) {
 
         SearchPlaceResponseList nearestPlaces =
-                aiServiceFacade.searchRecommendFacilityPlaces(userId, longitude, latitude);
+                aiServiceFacade.searchRecommendPlaces(userId, true, longitude, latitude);
 
         return ResponseEntity
                 .status(HttpStatus.OK)
@@ -57,14 +57,14 @@ public class RecommendController {
             @RequestParam Double latitude) {
 
         SearchPlaceResponseList nearestPlaces =
-                aiServiceFacade.searchRecommendLecturePlaces(userId, longitude, latitude);
+                aiServiceFacade.searchRecommendPlaces(userId, false, longitude, latitude);
 
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(ResponseTemplate.from(nearestPlaces));
     }
 
-    @Operation(summary = "모든 MongoUser 가져오기", description = "모든 MongoUser 가져오기")
+    @Operation(summary = "모든 MongoUser 가져오기", description = "ai 분석을 위해 사용하니 신경쓰지 않으셔도 됩니다!")
     @PostMapping("/mongo-users")
     public MongoUserResponseList getAllMongoUsers(
             @RequestBody OnboardingAnalysisInfoList onboardingInfos
