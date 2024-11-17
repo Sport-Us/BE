@@ -1,6 +1,8 @@
 package com.sportus.be.auth.dto.response;
 
+import com.sportus.be.user.domain.type.Gender;
 import com.sportus.be.user.domain.type.Provider;
+import java.time.LocalDate;
 
 public interface OAuth2UserInfo {
 
@@ -9,5 +11,7 @@ public interface OAuth2UserInfo {
     String getProfileImage();
     String getName();
     String getEmail();
+    Gender getGender();
+    LocalDate getBirthDate();
     Provider getOAuthProvider();
 }

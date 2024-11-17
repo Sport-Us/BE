@@ -3,10 +3,8 @@ package com.sportus.be.auth.dto.response;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sportus.be.auth.dto.response.NaverOAuth2UserInfo.Response;
 import com.sportus.be.user.domain.User;
-import com.sportus.be.user.domain.type.Gender;
 import com.sportus.be.user.domain.type.Provider;
 import com.sportus.be.user.domain.type.Role;
-import java.time.LocalDate;
 import java.util.Map;
 import lombok.Builder;
 
@@ -42,7 +40,6 @@ public record OAuthAttributes(
     /**
      * of메소드로 OAuthAttributes 객체가 생성되어, 유저 정보들이 담긴 OAuth2UserInfo가 소셜 타입별로 주입된 상태 OAuth2UserInfo에서 socialId(식별값),
      */
-    //TODO : 필요한 정보들 제대로 받아오게 수정하기(성별, 생일만 하면 됨)
     public User toEntity(OAuth2UserInfo oauth2UserInfo) {
         return User.builder()
                 .nickname(oauth2UserInfo.getNickname())
@@ -50,8 +47,8 @@ public record OAuthAttributes(
                 .profileImageUrl(oauth2UserInfo.getProfileImage())
                 .provider(oauth2UserInfo.getOAuthProvider())
                 .socialId(oauth2UserInfo.getSocialId())
-                .birthDate(LocalDate.of(2000, 3, 8))
-                .gender(Gender.MALE)
+                .birthDate(oauth2UserInfo.getBirthDate())
+                .gender(oauth2UserInfo.getGender())
                 .role(Role.USER)
                 .isOnboarded(false)
                 .build();

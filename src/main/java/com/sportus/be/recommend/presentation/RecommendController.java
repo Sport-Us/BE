@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name = "Recommend", description = "추천 관련 API - 구현중")
+@Tag(name = "Recommend", description = "추천 관련 API")
 @Slf4j
 @RequiredArgsConstructor
 @RestController

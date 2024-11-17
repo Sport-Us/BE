@@ -1,5 +1,7 @@
 package com.sportus.be.global.exception.handler;
 
+import com.sportus.be.auth.exception.InvalidEmailException;
+import com.sportus.be.auth.exception.TokenNotValidException;
 import com.sportus.be.cardnews.exception.CardNewsNotFoundException;
 import com.sportus.be.global.exception.FileConvertFailException;
 import com.sportus.be.global.exception.errorcode.ErrorCode;
@@ -35,6 +37,18 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     private static final Logger log = LoggerFactory.getLogger("ErrorLogger");
     private static final String LOG_FORMAT_INFO = "\n[🔵INFO] - ({} {})\n(id: {}, role: {})\n{}\n {}: {}";
     private static final String LOG_FORMAT_ERROR = "\n[🔴ERROR] - ({} {})\n(id: {}, role: {})";
+
+    @ExceptionHandler(TokenNotValidException.class)
+    public ResponseEntity<Object> handleTokenNotValid(TokenNotValidException e, HttpServletRequest request) {
+        logInfo(e.getErrorCode(), e, request);
+        return handleExceptionInternal(e.getErrorCode());
+    }
+
+    @ExceptionHandler(InvalidEmailException.class)
+    public ResponseEntity<Object> handleInvalidEmail(InvalidEmailException e, HttpServletRequest request) {
+        logInfo(e.getErrorCode(), e, request);
+        return handleExceptionInternal(e.getErrorCode());
+    }
 
     @ExceptionHandler(UserNotFoundException.class)
     public ResponseEntity<Object> handleUserNotFound(UserNotFoundException e, HttpServletRequest request) {

@@ -3,6 +3,8 @@ package com.sportus.be.user.domain;
 import com.sportus.be.user.domain.type.Gender;
 import com.sportus.be.user.domain.type.Provider;
 import com.sportus.be.user.domain.type.Role;
+import com.sportus.be.user.dto.request.UserOnboardingRequest;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -10,8 +12,10 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import java.time.LocalDate;
+import java.util.List;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -61,6 +65,9 @@ public class User {
     @Column(name = "role", nullable = false)
     private Role role;
 
+    @OneToMany(mappedBy = "user", orphanRemoval = true, cascade = CascadeType.ALL)
+    private List<Onboarding> onboardingList;
+
     @Builder
     public User(String nickname, String profileImageUrl, String email, String password, Provider provider,
                 String socialId, LocalDate birthDate, Gender gender, Boolean isOnboarded, Role role) {
@@ -74,5 +81,12 @@ public class User {
         this.gender = gender;
         this.isOnboarded = isOnboarded;
         this.role = role;
+    }
+
+    public void onboarding(List<UserOnboardingRequest> userOnboardingRequestList) {
+        userOnboardingRequestList.forEach(userOnboardingRequest -> {
+            Onboarding onboarding = userOnboardingRequest.toEntity(this);
+            this.onboardingList.add(onboarding);
+        });
     }
 }

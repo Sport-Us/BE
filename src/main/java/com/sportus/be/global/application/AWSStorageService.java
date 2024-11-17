@@ -41,7 +41,7 @@ public class AWSStorageService {
                     .withCannedAcl(CannedAccessControlList.PublicRead));
 
             // 파일 URL 반환 (S3의 기본 URL 형식 사용)
-            return "https://" + bucket + ".s3.amazonaws.com/" + fileLocation;
+            return "https://" + bucket + ".s3.ap-northeast-2.amazonaws.com/" + fileLocation;
         } catch (IOException e) {
             throw new FileConvertFailException(GlobalErrorCode.FILE_CONVERT_FAIL);
         }

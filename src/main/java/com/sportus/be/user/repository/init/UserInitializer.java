@@ -40,7 +40,7 @@ public class UserInitializer implements ApplicationRunner {
 
             User DUMMY_ADMIN = User.builder()
                     .nickname("관리자")
-                    .profileImageUrl("https://" + bucket + ".s3.amazonaws.com/" + DUMMY_PROFILE_IMAGE_URL)
+                    .profileImageUrl("https://" + bucket + ".s3.ap-northeast-2.amazonaws.com" + DUMMY_PROFILE_IMAGE_URL)
                     .email("admin@naver.com")
                     .password(passwordEncoder.encode("adminPassword"))
                     .provider(Provider.SELF)
@@ -52,7 +52,7 @@ public class UserInitializer implements ApplicationRunner {
 
             User DUMMY_USER1 = User.builder()
                     .nickname("user1")
-                    .profileImageUrl("https://" + bucket + ".s3.amazonaws.com/" + DUMMY_PROFILE_IMAGE_URL)
+                    .profileImageUrl("https://" + bucket + ".s3.ap-northeast-2.amazonaws.com" + DUMMY_PROFILE_IMAGE_URL)
                     .email("user1@naver.com")
                     .password(passwordEncoder.encode("user1Password"))
                     .provider(Provider.SELF)
@@ -64,7 +64,7 @@ public class UserInitializer implements ApplicationRunner {
 
             User DUMMY_USER2 = User.builder()
                     .nickname("user2")
-                    .profileImageUrl("https://" + bucket + ".s3.amazonaws.com/" + DUMMY_PROFILE_IMAGE_URL)
+                    .profileImageUrl("https://" + bucket + ".s3.ap-northeast-2.amazonaws.com" + DUMMY_PROFILE_IMAGE_URL)
                     .email("user2@naver.com")
                     .password(passwordEncoder.encode("user2Password"))
                     .provider(Provider.SELF)
