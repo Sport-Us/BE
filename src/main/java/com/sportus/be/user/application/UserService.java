@@ -5,6 +5,7 @@ import static com.sportus.be.user.exception.errorcode.UserErrorCode.USER_NOT_FOU
 import com.sportus.be.recommend.repository.mongo.MongoUserRepository;
 import com.sportus.be.user.domain.User;
 import com.sportus.be.user.dto.request.UserOnboardingRequestList;
+import com.sportus.be.user.dto.response.MypageResponse;
 import com.sportus.be.user.exception.UserNotFoundException;
 import com.sportus.be.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -31,6 +32,12 @@ public class UserService {
 
     private void makeMongoUser(User user, UserOnboardingRequestList userOnboardingRequestList) {
         mongoUserRepository.save(userOnboardingRequestList.toMongoUser(user));
+    }
+
+    // 마이페이지 유저 정보 조회
+    public MypageResponse getMypage(Long userId) {
+        User user = getUserById(userId);
+        return MypageResponse.from(user);
     }
 
     public User getUserById(Long userId) {
