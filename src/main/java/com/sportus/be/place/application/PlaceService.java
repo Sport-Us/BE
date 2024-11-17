@@ -12,10 +12,16 @@ import com.sportus.be.place.exception.PlaceNotFoundException;
 import com.sportus.be.place.exception.errorcode.PlaceErrorCode;
 import com.sportus.be.place.repository.PlaceRepository;
 import com.sportus.be.place.repository.mongo.MongoPlaceRepository;
+import com.sportus.be.recommend.domain.MongoAISearchInfo;
+import com.sportus.be.recommend.domain.MongoUser;
 import java.util.List;
 import java.util.stream.Stream;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,6 +32,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class PlaceService {
 
     private final MongoPlaceRepository mongoPlaceRepository;
+    private final MongoTemplate mongoTemplate;
     private final PlaceRepository placeRepository;
 
     // 주변 시설 검색
@@ -91,8 +98,30 @@ public class PlaceService {
     }
 
     // 특정 장소 상세 조회
+    @Transactional
     public PlaceDetailWithReviews findPlaceDetail(Long userId, Long placeId, Long size) {
-        return placeRepository.findPlaceDetail(placeId, userId, size);
+        PlaceDetailWithReviews placeDetail = placeRepository.findPlaceDetail(placeId, userId, size);
+
+        updateUserAiSearchInfo(userId, placeId, placeDetail.isFacility(), placeDetail.getCategoryAsString());
+
+        return placeDetail;
+    }
+
+    // MongoDB에 사용자 AI 검색 정보 추가
+    private void updateUserAiSearchInfo(Long userId, Long placeId, boolean isFacility, String category) {
+        // 사용자 조회
+        Query query = new Query(Criteria.where("userId").is(userId));
+        Update update = new Update();
+
+        // 중복된 AISearchInfo 추가를 방지하기 위한 로직
+        query.addCriteria(Criteria.where("aiSearchInfoList.placeId").ne(placeId)); // 중복 확인
+
+        // AISearchInfo 추가
+        MongoAISearchInfo aiSearchInfo = MongoAISearchInfo.of(placeId, isFacility, category);
+        update.push("aiSearchInfoList", aiSearchInfo); // 리스트에 추가
+
+        // 업데이트 수행
+        mongoTemplate.updateFirst(query, update, MongoUser.class);
     }
 
     // 특정 장소 정보 조회

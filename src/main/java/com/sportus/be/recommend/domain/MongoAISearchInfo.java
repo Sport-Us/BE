@@ -32,4 +32,12 @@ public class MongoAISearchInfo {
         this.isFacility = isFacility;
         this.placeCategory = placeCategory;
     }
+
+    public static MongoAISearchInfo of(Long placeId, Boolean isFacility, String placeCategory) {
+        return MongoAISearchInfo.builder()
+                .placeId(placeId)
+                .isFacility(isFacility)
+                .placeCategory(placeCategory)
+                .build();
+    }
 }
