@@ -36,49 +36,52 @@ public class UserInitializer implements ApplicationRunner {
         if (userRepository.count() > 0) {
             log.info("[User]더미 데이터 존재");
         } else {
-            List<User> userList = new ArrayList<>();
-
-            User DUMMY_ADMIN = User.builder()
-                    .nickname("관리자")
-                    .profileImageUrl("https://" + bucket + ".s3.ap-northeast-2.amazonaws.com" + DUMMY_PROFILE_IMAGE_URL)
-                    .email("admin@naver.com")
-                    .password(passwordEncoder.encode("adminPassword"))
-                    .provider(Provider.SELF)
-                    .birthDate(LocalDate.of(1990, 1, 1))
-                    .gender(Gender.MALE)
-                    .role(Role.USER)
-                    .isOnboarded(true)
-                    .build();
-
-            User DUMMY_USER1 = User.builder()
-                    .nickname("user1")
-                    .profileImageUrl("https://" + bucket + ".s3.ap-northeast-2.amazonaws.com" + DUMMY_PROFILE_IMAGE_URL)
-                    .email("user1@naver.com")
-                    .password(passwordEncoder.encode("user1Password"))
-                    .provider(Provider.SELF)
-                    .birthDate(LocalDate.of(1990, 1, 1))
-                    .gender(Gender.MALE)
-                    .role(Role.USER)
-                    .isOnboarded(true)
-                    .build();
-
-            User DUMMY_USER2 = User.builder()
-                    .nickname("user2")
-                    .profileImageUrl("https://" + bucket + ".s3.ap-northeast-2.amazonaws.com" + DUMMY_PROFILE_IMAGE_URL)
-                    .email("user2@naver.com")
-                    .password(passwordEncoder.encode("user2Password"))
-                    .provider(Provider.SELF)
-                    .birthDate(LocalDate.of(1990, 1, 1))
-                    .gender(Gender.MALE)
-                    .role(Role.USER)
-                    .isOnboarded(true)
-                    .build();
-
-            userList.add(DUMMY_ADMIN);
-            userList.add(DUMMY_USER1);
-            userList.add(DUMMY_USER2);
-
             for (int i = 0; i < 10; i++) {
+                List<User> userList = new ArrayList<>();
+
+                User DUMMY_ADMIN = User.builder()
+                        .nickname("관리자")
+                        .profileImageUrl(
+                                "https://" + bucket + ".s3.ap-northeast-2.amazonaws.com" + DUMMY_PROFILE_IMAGE_URL)
+                        .email("admin@naver.com")
+                        .password(passwordEncoder.encode("adminPassword"))
+                        .provider(Provider.SELF)
+                        .birthDate(LocalDate.of(1990, 1, 1))
+                        .gender(Gender.MALE)
+                        .role(Role.USER)
+                        .isOnboarded(true)
+                        .build();
+
+                User DUMMY_USER1 = User.builder()
+                        .nickname("user1")
+                        .profileImageUrl(
+                                "https://" + bucket + ".s3.ap-northeast-2.amazonaws.com" + DUMMY_PROFILE_IMAGE_URL)
+                        .email("user1@naver.com")
+                        .password(passwordEncoder.encode("user1Password"))
+                        .provider(Provider.SELF)
+                        .birthDate(LocalDate.of(1990, 1, 1))
+                        .gender(Gender.MALE)
+                        .role(Role.USER)
+                        .isOnboarded(true)
+                        .build();
+
+                User DUMMY_USER2 = User.builder()
+                        .nickname("user2")
+                        .profileImageUrl(
+                                "https://" + bucket + ".s3.ap-northeast-2.amazonaws.com" + DUMMY_PROFILE_IMAGE_URL)
+                        .email("user2@naver.com")
+                        .password(passwordEncoder.encode("user2Password"))
+                        .provider(Provider.SELF)
+                        .birthDate(LocalDate.of(1990, 1, 1))
+                        .gender(Gender.MALE)
+                        .role(Role.USER)
+                        .isOnboarded(true)
+                        .build();
+
+                userList.add(DUMMY_ADMIN);
+                userList.add(DUMMY_USER1);
+                userList.add(DUMMY_USER2);
+
                 userRepository.saveAll(userList);
             }
         }

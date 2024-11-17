@@ -23,8 +23,10 @@ public class MongoUser {
     @Field(name = "user_id")
     private Long userId;
 
+    @Field(name = "ai_search_info_list")
     private List<MongoAISearchInfo> aiSearchInfoList;
 
+    @Field(name = "ai_user_onboarding_info_list")
     private List<MongoAIUserOnboardingInfo> aiUserOnboardingInfoList;
 
     @Builder

@@ -87,6 +87,7 @@ public class User {
         userOnboardingRequestList.forEach(userOnboardingRequest -> {
             Onboarding onboarding = userOnboardingRequest.toEntity(this);
             this.onboardingList.add(onboarding);
+            this.isOnboarded = true;
         });
     }
 }

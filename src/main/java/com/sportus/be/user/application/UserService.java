@@ -2,6 +2,7 @@ package com.sportus.be.user.application;
 
 import static com.sportus.be.user.exception.errorcode.UserErrorCode.USER_NOT_FOUND;
 
+import com.sportus.be.recommend.repository.mongo.MongoUserRepository;
 import com.sportus.be.user.domain.User;
 import com.sportus.be.user.dto.request.UserOnboardingRequestList;
 import com.sportus.be.user.exception.UserNotFoundException;
@@ -18,11 +19,18 @@ import org.springframework.transaction.annotation.Transactional;
 public class UserService {
 
     private final UserRepository userRepository;
+    private final MongoUserRepository mongoUserRepository;
 
     @Transactional
     public void onboarding(Long userId, UserOnboardingRequestList userOnboardingRequestList) {
         User user = getUserById(userId);
         user.onboarding(userOnboardingRequestList.userOnboardingRequestList());
+
+        makeMongoUser(user, userOnboardingRequestList);
+    }
+
+    private void makeMongoUser(User user, UserOnboardingRequestList userOnboardingRequestList) {
+        mongoUserRepository.save(userOnboardingRequestList.toMongoUser(user));
     }
 
     public User getUserById(Long userId) {
