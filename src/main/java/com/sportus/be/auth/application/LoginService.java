@@ -43,14 +43,14 @@ public class LoginService {
 
         response.setHeader("Authorization", "Bearer " + accessToken);
 
-//        try {
-//            if (user.getIsOnboarded()) {
-//                response.sendRedirect(successRedirectUri); // 온보딩이 완료되었다면 메인 페이지로 리다이렉트
-//            } else {
-//                response.sendRedirect(onboardingUri); // 온보딩이 완료되지 않았다면 리다이렉트
-//            }
-//        } catch (IOException e) {
-//            throw new RuntimeException(e);
-//        }
+        try {
+            if (user.getIsOnboarded()) {
+                response.sendRedirect(successRedirectUri); // 온보딩이 완료되었다면 메인 페이지로 리다이렉트
+            } else {
+                response.sendRedirect(onboardingUri); // 온보딩이 완료되지 않았다면 리다이렉트
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 }
