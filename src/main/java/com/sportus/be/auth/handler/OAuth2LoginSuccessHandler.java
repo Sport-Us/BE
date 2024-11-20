@@ -32,9 +32,8 @@ public class OAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHan
     public void onAuthenticationSuccess(
             HttpServletRequest request, HttpServletResponse response, Authentication authentication
     ) throws IOException {
-
         CustomOAuth2User oAuth2User = (CustomOAuth2User) authentication.getPrincipal();
-        String targetUrl = determineTargetUrl(response, oAuth2User);
+        String targetUrl = determineTargetUrl(oAuth2User);
 
         if (response.isCommitted()) {
             log.debug("Response has already been committed");
@@ -45,13 +44,11 @@ public class OAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHan
     }
 
 
-    private String determineTargetUrl(HttpServletResponse response, CustomOAuth2User oAuth2User) {
-
+    private String determineTargetUrl(CustomOAuth2User oAuth2User) {
         // JWT 생성
         String accessToken = tokenProvider.createAccessToken(oAuth2User);
-        tokenProvider.createRefreshToken(oAuth2User, response);
+        String refreshToken = tokenProvider.createRefreshToken(oAuth2User);
 
-        response.setHeader("Authorization", "Bearer " + accessToken);
 
         // isOnboarded 체크
         redirectUri = userRepository.findById(oAuth2User.getUserId())
@@ -59,7 +56,12 @@ public class OAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHan
                 .map(user -> redirectUri)   // isOnboarded가 true일 때 리다이렉트할 URL
                 .orElse(onboardingUri);     // isOnboarded가 false일 때 리다이렉트할 URL
 
-        return UriComponentsBuilder.fromUriString(redirectUri)
+        String uriWithTokens = UriComponentsBuilder.fromHttpUrl(redirectUri)
+                .queryParam("accessToken", accessToken)
+                .queryParam("refreshToken", refreshToken)
+                .toUriString();
+
+        return UriComponentsBuilder.fromUriString(uriWithTokens)
                 .build().toUriString();
     }
 }

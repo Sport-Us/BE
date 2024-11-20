@@ -17,13 +17,11 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import jakarta.annotation.PostConstruct;
-import jakarta.servlet.http.HttpServletResponse;
 import java.security.Key;
 import java.util.Date;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.ResponseCookie;
 import org.springframework.stereotype.Component;
 
 @Slf4j
@@ -53,18 +51,8 @@ public class JwtTokenProvider {
     /**
      * RefreshToken 생성
      */
-    public void createRefreshToken(Object user, HttpServletResponse response) {
-        String refreshToken = createToken(user, jwtProperties.refreshTokenExpiration());
-
-        ResponseCookie cookie = ResponseCookie.from("REFRESH_TOKEN", refreshToken)
-                .maxAge(jwtProperties.refreshTokenExpiration() / 1000)
-                .path("/")
-//                .secure(true)
-                .sameSite("None")
-                .httpOnly(true)
-                .build();
-
-        response.addHeader("Set-Cookie", cookie.toString());
+    public String createRefreshToken(Object user) {
+        return createToken(user, jwtProperties.refreshTokenExpiration());
     }
 
     /**

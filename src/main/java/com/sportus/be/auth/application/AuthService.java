@@ -22,6 +22,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.util.UriComponentsBuilder;
 
 @Slf4j
 @Service
@@ -36,6 +37,9 @@ public class AuthService {
 
     @Value("${cloud.aws.s3.bucket}")
     private String bucket;
+    @Value("${app.oauth2.successRedirectUri}")
+    private String successRedirectUri;
+
     private static final String DUMMY_PROFILE_IMAGE_URL = "/profile/ic_profile.svg";
 
     public String getTestToken(Long userId) {
@@ -57,17 +61,6 @@ public class AuthService {
         }
     }
 
-    public void onboardingToken(HttpServletResponse response, String refreshToken) {
-        if (!jwtTokenProvider.validateToken(refreshToken)) {
-            throw new TokenNotValidException(AuthErrorCode.TOKEN_NOT_VALID);
-        }
-
-        User user = jwtTokenProvider.getUser(refreshToken);
-
-        String accessToken = jwtTokenProvider.createAccessToken(user);
-        response.setHeader("Authorization", "Bearer " + accessToken);
-    }
-
     public boolean validateNickname(String nickname) {
         return userRepository.existsByNickname(nickname);
     }
@@ -85,9 +78,19 @@ public class AuthService {
         User user = jwtTokenProvider.getUser(refreshToken);
 
         String accessToken = jwtTokenProvider.createAccessToken(user);
-        jwtTokenProvider.createRefreshToken(user, response);
+        String newRefreshToken = jwtTokenProvider.createRefreshToken(user);
 
-        response.setHeader("Authorization", "Bearer " + accessToken);
+        // URI에 토큰 추가
+        String uriWithTokens = UriComponentsBuilder.fromHttpUrl(successRedirectUri)
+                .queryParam("accessToken", accessToken)
+                .queryParam("refreshToken", newRefreshToken)
+                .toUriString();
+
+        try {
+            response.sendRedirect(uriWithTokens);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Transactional

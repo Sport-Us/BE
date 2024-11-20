@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.util.UriComponentsBuilder;
 
 @Service
 @Transactional(readOnly = true)
@@ -29,7 +30,6 @@ public class LoginService {
     private final PasswordEncoder passwordEncoder;
 
     public void login(String email, String password, HttpServletResponse response) {
-
         User user = userService.findByEmail(email)
                 .orElseThrow(() -> new UserNotFoundException(USER_NOT_FOUND));
 
@@ -37,18 +37,22 @@ public class LoginService {
             throw new IllegalArgumentException("Password does not match");
         }
 
-        //토큰 생성 후 리턴
+        // 토큰 생성
         String accessToken = jwtTokenProvider.createAccessToken(user);
-        jwtTokenProvider.createRefreshToken(user, response);
+        String refreshToken = jwtTokenProvider.createRefreshToken(user);
 
-        response.setHeader("Authorization", "Bearer " + accessToken);
+        // 쿼리 파라미터 설정
+        String redirectUri = user.getIsOnboarded() ? successRedirectUri : onboardingUri;
+
+        // URI에 토큰 추가
+        String uriWithTokens = UriComponentsBuilder.fromHttpUrl(redirectUri)
+                .queryParam("accessToken", accessToken)
+                .queryParam("refreshToken", refreshToken)
+                .toUriString();
 
         try {
-            if (user.getIsOnboarded()) {
-                response.sendRedirect(successRedirectUri); // 온보딩이 완료되었다면 메인 페이지로 리다이렉트
-            } else {
-                response.sendRedirect(onboardingUri); // 온보딩이 완료되지 않았다면 리다이렉트
-            }
+            // 토큰이 포함된 URI로 리다이렉트
+            response.sendRedirect(uriWithTokens);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

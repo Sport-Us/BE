@@ -56,25 +56,10 @@ public class AuthController {
                 .body(ResponseTemplate.EMPTY_RESPONSE);
     }
 
-    @Operation(summary = "온보딩 access token 전달", description = "온보딩 access token 전달")
-    @GetMapping("/onboarding")
-    public ResponseEntity<ResponseTemplate<Object>> onboarding(
-            @CookieValue(name = "REFRESH_TOKEN") String refreshToken,
-            HttpServletResponse response
-    ) {
-
-        authService.onboardingToken(response, refreshToken);
-
-        return ResponseEntity
-                .status(HttpStatus.OK)
-                .body(ResponseTemplate.from(response));
-    }
-
     @Operation(summary = "로그인 진행", description = "access token은 header에 Authorization: Bearer 로, refresh token은 쿠키로 전달")
     @PostMapping("/sign-in")
     public ResponseEntity<ResponseTemplate<?>> signIn(
-            @RequestBody SignInRequest signInRequest, HttpServletResponse response
-    ) {
+            @RequestBody SignInRequest signInRequest, HttpServletResponse response) {
 
         authService.signIn(signInRequest, response);
 
@@ -98,8 +83,7 @@ public class AuthController {
     @Operation(summary = "access token 재발급", description = "access token 재발급 및 refresh token 갱신")
     @GetMapping("/re-issue")
     public ResponseEntity<ResponseTemplate<?>> reIssueToken(
-            @CookieValue(name = "REFRESH_TOKEN") String refreshToken, HttpServletResponse response
-    ) {
+            @CookieValue(name = "REFRESH_TOKEN") String refreshToken, HttpServletResponse response) {
 
         authService.reIssueToken(refreshToken, response);
 
