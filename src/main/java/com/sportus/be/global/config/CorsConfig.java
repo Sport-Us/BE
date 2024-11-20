@@ -28,9 +28,8 @@ public class CorsConfig {
                 HttpMethod.PATCH.name(),
                 HttpMethod.OPTIONS.name()));
         config.setAllowedHeaders(List.of("*"));
-        config.setExposedHeaders(List.of("*"));
+        config.setExposedHeaders(List.of("Authorization", "Set-Cookie", "REFRESH_TOKEN"));
         config.setAllowCredentials(true);
-        config.setMaxAge(3600L);
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", config);
