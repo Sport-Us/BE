@@ -33,7 +33,7 @@ public class OAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHan
             HttpServletRequest request, HttpServletResponse response, Authentication authentication
     ) throws IOException {
         CustomOAuth2User oAuth2User = (CustomOAuth2User) authentication.getPrincipal();
-        String targetUrl = determineTargetUrl(oAuth2User);
+        String targetUrl = determineTargetUrl(oAuth2User, response);
 
         if (response.isCommitted()) {
             log.debug("Response has already been committed");
@@ -44,10 +44,10 @@ public class OAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHan
     }
 
 
-    private String determineTargetUrl(CustomOAuth2User oAuth2User) {
+    private String determineTargetUrl(CustomOAuth2User oAuth2User, HttpServletResponse response) {
         // JWT 생성
         String accessToken = tokenProvider.createAccessToken(oAuth2User);
-        String refreshToken = tokenProvider.createRefreshToken(oAuth2User);
+        tokenProvider.createRefreshToken(oAuth2User, response);
 
 
         // isOnboarded 체크
@@ -58,7 +58,6 @@ public class OAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHan
 
         String uriWithTokens = UriComponentsBuilder.fromHttpUrl(redirectUri)
                 .queryParam("accessToken", accessToken)
-                .queryParam("refreshToken", refreshToken)
                 .toUriString();
 
         return UriComponentsBuilder.fromUriString(uriWithTokens)

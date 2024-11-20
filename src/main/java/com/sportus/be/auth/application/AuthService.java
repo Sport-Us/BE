@@ -78,12 +78,11 @@ public class AuthService {
         User user = jwtTokenProvider.getUser(refreshToken);
 
         String accessToken = jwtTokenProvider.createAccessToken(user);
-        String newRefreshToken = jwtTokenProvider.createRefreshToken(user);
+        jwtTokenProvider.createRefreshToken(user, response);
 
         // URI에 토큰 추가
         String uriWithTokens = UriComponentsBuilder.fromHttpUrl(successRedirectUri)
                 .queryParam("accessToken", accessToken)
-                .queryParam("refreshToken", newRefreshToken)
                 .toUriString();
 
         try {

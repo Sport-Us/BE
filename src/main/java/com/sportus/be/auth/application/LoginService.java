@@ -39,7 +39,7 @@ public class LoginService {
 
         // 토큰 생성
         String accessToken = jwtTokenProvider.createAccessToken(user);
-        String refreshToken = jwtTokenProvider.createRefreshToken(user);
+        jwtTokenProvider.createRefreshToken(user, response);
 
         // 쿼리 파라미터 설정
         String redirectUri = user.getIsOnboarded() ? successRedirectUri : onboardingUri;
@@ -47,7 +47,6 @@ public class LoginService {
         // URI에 토큰 추가
         String uriWithTokens = UriComponentsBuilder.fromHttpUrl(redirectUri)
                 .queryParam("accessToken", accessToken)
-                .queryParam("refreshToken", refreshToken)
                 .toUriString();
 
         try {
