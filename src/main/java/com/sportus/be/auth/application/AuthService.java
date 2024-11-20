@@ -57,6 +57,17 @@ public class AuthService {
         }
     }
 
+    public void onboardingToken(HttpServletResponse response, String refreshToken) {
+        if (!jwtTokenProvider.validateToken(refreshToken)) {
+            throw new TokenNotValidException(AuthErrorCode.TOKEN_NOT_VALID);
+        }
+
+        User user = jwtTokenProvider.getUser(refreshToken);
+
+        String accessToken = jwtTokenProvider.createAccessToken(user);
+        response.setHeader("Authorization", "Bearer " + accessToken);
+    }
+
     public boolean validateNickname(String nickname) {
         return userRepository.existsByNickname(nickname);
     }
