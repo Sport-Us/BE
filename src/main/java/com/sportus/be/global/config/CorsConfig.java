@@ -13,13 +13,13 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 public class CorsConfig {
 
     @Value("${cors.allowed.origins}")
-    private String[] allowedOrigins;
+    private List<String> allowedOrigins;
 
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration config = new CorsConfiguration();
 
-        config.setAllowedOrigins(List.of(allowedOrigins));
+        config.setAllowedOrigins(allowedOrigins);
         config.setAllowedMethods(List.of(
                 HttpMethod.POST.name(),
                 HttpMethod.GET.name(),
@@ -30,6 +30,7 @@ public class CorsConfig {
         config.setAllowedHeaders(List.of("*"));
         config.setExposedHeaders(List.of("Authorization", "Set-Cookie", "REFRESH_TOKEN"));
         config.setAllowCredentials(true);
+        config.setMaxAge(3600L);
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", config);
