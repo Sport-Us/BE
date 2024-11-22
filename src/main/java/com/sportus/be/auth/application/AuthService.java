@@ -5,6 +5,7 @@ import static com.sportus.be.user.exception.errorcode.UserErrorCode.USER_NOT_FOU
 
 import com.sportus.be.auth.dto.request.CreateUserRequest;
 import com.sportus.be.auth.dto.request.SignInRequest;
+import com.sportus.be.auth.dto.response.ReissueTokenResponse;
 import com.sportus.be.auth.exception.InvalidEmailException;
 import com.sportus.be.auth.exception.TokenNotValidException;
 import com.sportus.be.auth.exception.errorcode.AuthErrorCode;
@@ -22,7 +23,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.util.UriComponentsBuilder;
 
 @Slf4j
 @Service
@@ -37,8 +37,6 @@ public class AuthService {
 
     @Value("${cloud.aws.s3.bucket}")
     private String bucket;
-    @Value("${app.oauth2.successRedirectUri}")
-    private String successRedirectUri;
 
     private static final String DUMMY_PROFILE_IMAGE_URL = "/profile/ic_profile.svg";
 
@@ -69,7 +67,7 @@ public class AuthService {
         loginService.login(signUpRequest.email(), signUpRequest.password(), response);
     }
 
-    public void reIssueToken(String refreshToken, HttpServletResponse response) {
+    public ReissueTokenResponse reIssueToken(String refreshToken, HttpServletResponse response) {
 
         if (!jwtTokenProvider.validateToken(refreshToken)) {
             throw new TokenNotValidException(AuthErrorCode.TOKEN_NOT_VALID);
@@ -80,16 +78,7 @@ public class AuthService {
         String accessToken = jwtTokenProvider.createAccessToken(user);
         jwtTokenProvider.createRefreshToken(user, response);
 
-        // URI에 토큰 추가
-        String uriWithTokens = UriComponentsBuilder.fromHttpUrl(successRedirectUri)
-                .queryParam("accessToken", accessToken)
-                .toUriString();
-
-        try {
-            response.sendRedirect(uriWithTokens);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+        return ReissueTokenResponse.from(accessToken);
     }
 
     @Transactional

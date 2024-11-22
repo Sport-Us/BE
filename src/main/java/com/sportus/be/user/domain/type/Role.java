@@ -18,4 +18,13 @@ public enum Role {
     public Collection<? extends GrantedAuthority> getAuthority() {
         return Collections.singletonList(new SimpleGrantedAuthority(this.name()));
     }
+
+    public static Role from(String key) {
+        for (Role role : values()) {
+            if (role.key.equals(key)) {
+                return role;
+            }
+        }
+        throw new IllegalArgumentException("Invalid Role key: " + key);
+    }
 }
