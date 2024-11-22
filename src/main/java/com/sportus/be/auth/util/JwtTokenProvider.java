@@ -86,7 +86,7 @@ public class JwtTokenProvider {
                     .addClaims(Map.of(USER_ROLE, regularUser.getRole().name()));
         } else if (user instanceof CustomOAuth2User oAuth2User) {
             builder.setSubject(oAuth2User.getUserId().toString())
-                    .addClaims(Map.of(USER_ROLE, oAuth2User.getAuthorities()));
+                    .addClaims(Map.of(USER_ROLE, oAuth2User.getRole().name()));
         } else {
             throw new IllegalArgumentException("Unsupported user type: " + user.getClass().getName());
         }
