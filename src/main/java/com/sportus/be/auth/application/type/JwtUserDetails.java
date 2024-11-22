@@ -1,6 +1,6 @@
 package com.sportus.be.auth.application.type;
 
-import static com.sportus.be.user.domain.type.Role.USER;
+import static com.sportus.be.user.domain.type.Role.ROLE_USER;
 
 import com.sportus.be.user.domain.User;
 import com.sportus.be.user.domain.type.Role;
@@ -22,7 +22,7 @@ public record JwtUserDetails(
     public static JwtUserDetails from(User user) {
         return JwtUserDetails.builder()
                 .userId(user.getId())
-                .role(USER)
+                .role(ROLE_USER)
                 .build();
     }
 }

@@ -48,7 +48,7 @@ public class UserInitializer implements ApplicationRunner {
                         .provider(Provider.SELF)
                         .birthDate(LocalDate.of(1990, 1, 1))
                         .gender(Gender.MALE)
-                        .role(Role.USER)
+                        .role(Role.ROLE_USER)
                         .isOnboarded(true)
                         .build();
 
@@ -61,7 +61,7 @@ public class UserInitializer implements ApplicationRunner {
                         .provider(Provider.SELF)
                         .birthDate(LocalDate.of(1990, 1, 1))
                         .gender(Gender.MALE)
-                        .role(Role.USER)
+                        .role(Role.ROLE_USER)
                         .isOnboarded(true)
                         .build();
 
@@ -74,7 +74,7 @@ public class UserInitializer implements ApplicationRunner {
                         .provider(Provider.SELF)
                         .birthDate(LocalDate.of(1990, 1, 1))
                         .gender(Gender.MALE)
-                        .role(Role.USER)
+                        .role(Role.ROLE_USER)
                         .isOnboarded(true)
                         .build();
 
