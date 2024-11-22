@@ -7,7 +7,6 @@ import com.sportus.be.user.domain.User;
 import com.sportus.be.user.exception.UserNotFoundException;
 import com.sportus.be.user.repository.UserRepository;
 import jakarta.servlet.http.HttpServletResponse;
-import java.io.IOException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -29,7 +28,9 @@ public class LoginService {
     private final JwtTokenProvider jwtTokenProvider;
     private final PasswordEncoder passwordEncoder;
 
-    public void login(String email, String password, HttpServletResponse response) {
+    public String login(
+            String email, String password, HttpServletResponse response
+    ) {
         User user = userService.findByEmail(email)
                 .orElseThrow(() -> new UserNotFoundException(USER_NOT_FOUND));
 
@@ -44,16 +45,9 @@ public class LoginService {
         // 쿼리 파라미터 설정
         String redirectUri = user.getIsOnboarded() ? successRedirectUri : onboardingUri;
 
-        // URI에 토큰 추가
-        String uriWithTokens = UriComponentsBuilder.fromHttpUrl(redirectUri)
+        // 리다이렉트 URL 반환
+        return UriComponentsBuilder.fromHttpUrl(redirectUri)
                 .queryParam("accessToken", accessToken)
                 .toUriString();
-
-        try {
-            // 토큰이 포함된 URI로 리다이렉트
-            response.sendRedirect(uriWithTokens);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
     }
 }

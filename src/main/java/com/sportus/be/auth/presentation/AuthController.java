@@ -28,6 +28,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.view.RedirectView;
 
 @Tag(name = "Auth", description = "Auth 관련 API")
 @Slf4j
@@ -60,15 +61,11 @@ public class AuthController {
 
     @Operation(summary = "로그인 진행", description = "access token은 header에 Authorization: Bearer 로, refresh token은 쿠키로 전달")
     @PostMapping("/sign-in")
-    public ResponseEntity<ResponseTemplate<?>> signIn(
+    public RedirectView signIn(
             @RequestBody SignInRequest signInRequest, HttpServletResponse response
     ) {
-
-        authService.signIn(signInRequest, response);
-
-        return ResponseEntity
-                .status(HttpStatus.OK)
-                .body(ResponseTemplate.EMPTY_RESPONSE);
+        String redirectUri = authService.signIn(signInRequest, response);
+        return new RedirectView(redirectUri);
     }
 
     @Operation(summary = "닉네임 중복 검사", description = "닉네임이 존재하면 true, 존재하지 않으면 false를 반환합니다")

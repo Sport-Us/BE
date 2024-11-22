@@ -63,8 +63,10 @@ public class AuthService {
         return userRepository.existsByNickname(nickname);
     }
 
-    public void signIn(SignInRequest signUpRequest, HttpServletResponse response) {
-        loginService.login(signUpRequest.email(), signUpRequest.password(), response);
+    public String signIn(
+            SignInRequest signUpRequest, HttpServletResponse response
+    ) {
+        return loginService.login(signUpRequest.email(), signUpRequest.password(), response);
     }
 
     public ReissueTokenResponse reIssueToken(String refreshToken, HttpServletResponse response) {
