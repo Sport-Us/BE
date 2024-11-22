@@ -23,7 +23,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 public class OAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 
     @Value("${app.oauth2.successRedirectUri}")
-    private String redirectUri;
+    private String successRedirectUri;
     @Value("${app.onboarding.uri}")
     private String onboardingUri;
 
@@ -54,15 +54,18 @@ public class OAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHan
         User user = userRepository.findById(oAuth2User.getUserId())
                 .orElseThrow(() -> new UserNotFoundException(UserErrorCode.USER_NOT_FOUND));
 
-        if (!user.getIsOnboarded()) {
-            redirectUri = onboardingUri;
+        String redirectUri;
+
+        // isOnboarded 체크
+        if (user.getIsOnboarded()) {
+            redirectUri = successRedirectUri; // isOnboarded가 true일 때 리다이렉트할 URL
+        } else {
+            redirectUri = onboardingUri; // isOnboarded가 false일 때 리다이렉트할 URL
         }
 
-        String uriWithTokens = UriComponentsBuilder.fromHttpUrl(redirectUri)
+        return UriComponentsBuilder.fromHttpUrl(redirectUri)
                 .queryParam("accessToken", accessToken)
                 .toUriString();
-
-        return UriComponentsBuilder.fromUriString(uriWithTokens)
-                .build().toUriString();
     }
+
 }
