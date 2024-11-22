@@ -49,7 +49,7 @@ public record OAuthAttributes(
                 .socialId(oauth2UserInfo.getSocialId())
                 .birthDate(oauth2UserInfo.getBirthDate())
                 .gender(oauth2UserInfo.getGender())
-                .role(Role.ROLE_USER)
+                .role(Role.USER)
                 .isOnboarded(false)
                 .build();
     }

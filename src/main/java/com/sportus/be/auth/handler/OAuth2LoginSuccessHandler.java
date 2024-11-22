@@ -3,6 +3,8 @@ package com.sportus.be.auth.handler;
 import com.sportus.be.auth.dto.CustomOAuth2User;
 import com.sportus.be.auth.util.JwtTokenProvider;
 import com.sportus.be.user.domain.User;
+import com.sportus.be.user.exception.UserNotFoundException;
+import com.sportus.be.user.exception.errorcode.UserErrorCode;
 import com.sportus.be.user.repository.UserRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -49,12 +51,12 @@ public class OAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHan
         String accessToken = tokenProvider.createAccessToken(oAuth2User);
         tokenProvider.createRefreshToken(oAuth2User, response);
 
+        User user = userRepository.findById(oAuth2User.getUserId())
+                .orElseThrow(() -> new UserNotFoundException(UserErrorCode.USER_NOT_FOUND));
 
-        // isOnboarded 체크
-        redirectUri = userRepository.findById(oAuth2User.getUserId())
-                .filter(User::getIsOnboarded)
-                .map(user -> redirectUri)   // isOnboarded가 true일 때 리다이렉트할 URL
-                .orElse(onboardingUri);     // isOnboarded가 false일 때 리다이렉트할 URL
+        if (!user.getIsOnboarded()) {
+            redirectUri = onboardingUri;
+        }
 
         String uriWithTokens = UriComponentsBuilder.fromHttpUrl(redirectUri)
                 .queryParam("accessToken", accessToken)

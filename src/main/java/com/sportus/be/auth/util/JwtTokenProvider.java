@@ -128,6 +128,6 @@ public class JwtTokenProvider {
                 .parseClaimsJws(token)
                 .getBody();
 
-        return JwtUserDetails.from(claims);
+        return JwtUserDetails.fromClaim(claims);
     }
 }

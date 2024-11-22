@@ -23,7 +23,7 @@ public record CreateUserRequest(
 ) {
     public User toUser(PasswordEncoder passwordEncoder, String imagePath) {
         return User.builder()
-                .role(Role.ROLE_USER)
+                .role(Role.USER)
                 .gender(gender)
                 .birthDate(birthDate)
                 .email(email)
