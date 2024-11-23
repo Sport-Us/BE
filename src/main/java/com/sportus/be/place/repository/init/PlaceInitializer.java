@@ -1,7 +1,5 @@
 package com.sportus.be.place.repository.init;
 
-import static java.lang.Thread.sleep;
-
 import com.opencsv.CSVReader;
 import com.opencsv.exceptions.CsvValidationException;
 import com.sportus.be.global.util.DummyDataInit;
@@ -14,7 +12,6 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.nio.charset.StandardCharsets;
-import java.time.LocalTime;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.locationtech.jts.geom.Coordinate;
@@ -38,7 +35,8 @@ public class PlaceInitializer implements ApplicationRunner {
             log.info("[Place]더미 데이터 존재");
         } else {
             importCsvToPlace("data/개방학교체육시설.csv", 8, 14, 15, FacilityCategory.SCHOOL, 5, 10, 2, -1);
-            importCsvToPlace("data/내주변문화지도연계장애인스포츠강좌이용권시설정보.csv", 7, 8, 9, FacilityCategory.DISABLED, 0,
+            importCsvToPlace("data/공공체육시설프로그램정보.csv", 7, 19, 20, null, 1, 18, 4, 8);
+            importCsvToPlace("data/내주변문화지도연계장애인스포츠강좌이용권시설정보.csv", 6, 8, 9, FacilityCategory.DISABLED, 0,
                     Integer.MAX_VALUE, 2, -1);
             importCsvToPlace("data/스포츠강좌이용권시설데이터.csv", 8, 12, 13, FacilityCategory.PRIVATE, 4, Integer.MAX_VALUE, 1,
                     -1);
@@ -47,6 +45,7 @@ public class PlaceInitializer implements ApplicationRunner {
             importCsvToPlace("data/장애인스포츠강좌이용권이용현황.csv", 8, 18, 19, null, 4, 13, 1, 3);
             importCsvToPlace("data/전국공공체육시설데이터.csv", 23, 24, 25, FacilityCategory.PUBLIC, 0, 6, 10, -1);
             importCsvToPlace("data/전국체육시설현황.csv", 7, 8, 9, FacilityCategory.PRIVATE, 0, 3, 11, -1);
+            importCsvToPlace("data/청소년유아동이용가능체육시설프로그램정보.csv", 7, 24, 25, null, 1, 19, 4, 9);
         }
     }
 
