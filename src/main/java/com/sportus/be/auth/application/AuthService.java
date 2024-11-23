@@ -6,6 +6,7 @@ import static com.sportus.be.user.exception.errorcode.UserErrorCode.USER_NOT_FOU
 import com.sportus.be.auth.dto.request.CreateUserRequest;
 import com.sportus.be.auth.dto.request.SignInRequest;
 import com.sportus.be.auth.dto.response.ReissueTokenResponse;
+import com.sportus.be.auth.dto.response.SelfLoginResponse;
 import com.sportus.be.auth.exception.InvalidEmailException;
 import com.sportus.be.auth.exception.TokenNotValidException;
 import com.sportus.be.auth.exception.errorcode.AuthErrorCode;
@@ -63,7 +64,7 @@ public class AuthService {
         return userRepository.existsByNickname(nickname);
     }
 
-    public String signIn(
+    public SelfLoginResponse signIn(
             SignInRequest signUpRequest, HttpServletResponse response
     ) {
         return loginService.login(signUpRequest.email(), signUpRequest.password(), response);

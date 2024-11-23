@@ -6,6 +6,7 @@ import com.sportus.be.auth.application.AuthService;
 import com.sportus.be.auth.dto.request.CreateUserRequest;
 import com.sportus.be.auth.dto.request.SignInRequest;
 import com.sportus.be.auth.dto.response.ReissueTokenResponse;
+import com.sportus.be.auth.dto.response.SelfLoginResponse;
 import com.sportus.be.global.dto.ResponseTemplate;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -28,7 +29,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.view.RedirectView;
 
 @Tag(name = "Auth", description = "Auth 관련 API")
 @Slf4j
@@ -47,7 +47,7 @@ public class AuthController {
 
     @Operation(summary = "자체 회원가입", description = "소셜 로그인 없는 자체 회원가입")
     @PostMapping(value = "/sign-up", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE, MediaType.APPLICATION_JSON_VALUE})
-    public ResponseEntity<ResponseTemplate<Object>> signUp(
+    public ResponseEntity<ResponseTemplate<?>> signUp(
             @Valid @RequestPart CreateUserRequest request,
             @RequestPart(required = false) MultipartFile file
     ) {
@@ -61,16 +61,19 @@ public class AuthController {
 
     @Operation(summary = "로그인 진행", description = "access token은 header에 Authorization: Bearer 로, refresh token은 쿠키로 전달")
     @PostMapping("/sign-in")
-    public RedirectView signIn(
+    public ResponseEntity<ResponseTemplate<?>> signIn(
             @RequestBody SignInRequest signInRequest, HttpServletResponse response
     ) {
-        String redirectUri = authService.signIn(signInRequest, response);
-        return new RedirectView(redirectUri);
+        SelfLoginResponse selfLoginResponse = authService.signIn(signInRequest, response);
+
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(ResponseTemplate.from(selfLoginResponse));
     }
 
     @Operation(summary = "닉네임 중복 검사", description = "닉네임이 존재하면 true, 존재하지 않으면 false를 반환합니다")
     @GetMapping("/nickname/validation")
-    public ResponseEntity<ResponseTemplate<Object>> validateNickname(
+    public ResponseEntity<ResponseTemplate<?>> validateNickname(
             @Valid @RequestParam String nickname
     ) {
 
@@ -96,7 +99,7 @@ public class AuthController {
 
     @Operation(summary = "회원탈퇴", description = "회원탈퇴")
     @DeleteMapping("/withdraw")
-    public ResponseEntity<ResponseTemplate<Object>> withdraw(
+    public ResponseEntity<ResponseTemplate<?>> withdraw(
             @AuthenticationPrincipal Long userId
     ) {
 
