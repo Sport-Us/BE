@@ -39,6 +39,14 @@ public class PlaceService {
     public List<MapPlaceResponse> findFacilitiesWithinRadius(
             double longitude, double latitude, double radius, List<FacilityCategory> category) {
 
+        if (category.contains(FacilityCategory.ALL)) {
+            for (FacilityCategory facilityCategory : FacilityCategory.values()) {
+                if (facilityCategory != FacilityCategory.ALL && !category.contains(facilityCategory)) {
+                    category.add(facilityCategory);
+                }
+            }
+        }
+
         return mongoPlaceRepository.findAllFacilityByLocationNear(longitude, latitude, radius, category).stream()
                 .map(MapPlaceResponse::from)
                 .toList();
@@ -47,6 +55,14 @@ public class PlaceService {
     // 주변 강좌 검색
     public List<MapPlaceResponse> findLecturesWithinRadius(
             double longitude, double latitude, double radius, List<LectureCategory> category) {
+
+        if (category.contains(LectureCategory.ALL)) {
+            for (LectureCategory lectureCategory : LectureCategory.values()) {
+                if (lectureCategory != LectureCategory.ALL && !category.contains(lectureCategory)) {
+                    category.add(lectureCategory);
+                }
+            }
+        }
 
         return mongoPlaceRepository.findAllLectureByLocationNear(longitude, latitude, radius, category).stream()
                 .map(MapPlaceResponse::from)
@@ -57,6 +73,14 @@ public class PlaceService {
     public SearchPlaceResponseList searchFacilityPlaces(
             double longitude, double latitude, int maxDistant, List<FacilityCategory> categoryList, SortType sortType,
             String keyword, long page, long size) {
+
+        if (categoryList.contains(FacilityCategory.ALL)) {
+            for (FacilityCategory facilityCategory : FacilityCategory.values()) {
+                if (facilityCategory != FacilityCategory.ALL && !categoryList.contains(facilityCategory)) {
+                    categoryList.add(facilityCategory);
+                }
+            }
+        }
 
         List<SearchPlaceResponse> allSearchResult = placeRepository.findAllFacilityByLocationWithDistance(
                 longitude, latitude, maxDistant, categoryList, sortType, keyword, page, size);
@@ -69,6 +93,14 @@ public class PlaceService {
     public SearchPlaceResponseList searchLecturePlaces(
             double longitude, double latitude, int maxDistant, List<LectureCategory> categoryList, SortType sortType,
             String keyword, long page, long size) {
+
+        if (categoryList.contains(LectureCategory.ALL)) {
+            for (LectureCategory lectureCategory : LectureCategory.values()) {
+                if (lectureCategory != LectureCategory.ALL && !categoryList.contains(lectureCategory)) {
+                    categoryList.add(lectureCategory);
+                }
+            }
+        }
 
         List<SearchPlaceResponse> allSearchResult = placeRepository.findAllLectureByLocationWithDistance(
                 longitude, latitude, maxDistant, categoryList, sortType, keyword, page, size);

@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 @Getter
 @RequiredArgsConstructor
 public enum LectureCategory {
+    ALL("전체"),
     TAEKWONDO("태권도"),
     JUDO("유도"),
     BOXING("복싱"),
@@ -50,9 +51,5 @@ public enum LectureCategory {
             }
         }
         return null;
-    }
-
-    public static LectureCategory fromString(String name) {
-        return LectureCategory.valueOf(name.toUpperCase());
     }
 }
