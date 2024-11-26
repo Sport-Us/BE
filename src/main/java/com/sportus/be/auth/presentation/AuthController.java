@@ -10,7 +10,6 @@ import com.sportus.be.auth.dto.response.SelfLoginResponse;
 import com.sportus.be.global.dto.ResponseTemplate;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -18,12 +17,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
@@ -62,9 +61,9 @@ public class AuthController {
     @Operation(summary = "로그인 진행", description = "access token은 header에 Authorization: Bearer 로, refresh token은 쿠키로 전달")
     @PostMapping("/sign-in")
     public ResponseEntity<ResponseTemplate<?>> signIn(
-            @RequestBody SignInRequest signInRequest, HttpServletResponse response
+            @RequestBody SignInRequest signInRequest
     ) {
-        SelfLoginResponse selfLoginResponse = authService.signIn(signInRequest, response);
+        SelfLoginResponse selfLoginResponse = authService.signIn(signInRequest);
 
         return ResponseEntity
                 .status(HttpStatus.OK)
@@ -87,10 +86,10 @@ public class AuthController {
     @Operation(summary = "access token 재발급", description = "access token 재발급 및 refresh token 갱신")
     @GetMapping("/reissue")
     public ResponseEntity<ResponseTemplate<?>> reIssueToken(
-            @CookieValue(name = "REFRESH_TOKEN") String refreshToken, HttpServletResponse response
+            @RequestHeader(name = "Authorization") String refreshToken
     ) {
 
-        ReissueTokenResponse reissueTokenResponse = authService.reIssueToken(refreshToken, response);
+        ReissueTokenResponse reissueTokenResponse = authService.reIssueToken(refreshToken);
 
         return ResponseEntity
                 .status(HttpStatus.OK)

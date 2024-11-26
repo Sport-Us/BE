@@ -7,7 +7,6 @@ import com.sportus.be.auth.util.JwtTokenProvider;
 import com.sportus.be.user.domain.User;
 import com.sportus.be.user.exception.UserNotFoundException;
 import com.sportus.be.user.repository.UserRepository;
-import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -23,7 +22,7 @@ public class LoginService {
     private final PasswordEncoder passwordEncoder;
 
     public SelfLoginResponse login(
-            String email, String password, HttpServletResponse response
+            String email, String password
     ) {
         User user = userService.findByEmail(email)
                 .orElseThrow(() -> new UserNotFoundException(USER_NOT_FOUND));
@@ -34,8 +33,8 @@ public class LoginService {
 
         // 토큰 생성
         String accessToken = jwtTokenProvider.createAccessToken(user);
-        jwtTokenProvider.createRefreshToken(user, response);
+        String refreshToken = jwtTokenProvider.createRefreshToken(user);
 
-        return SelfLoginResponse.of(accessToken, user.getIsOnboarded());
+        return SelfLoginResponse.of(accessToken, refreshToken, user.getIsOnboarded());
     }
 }

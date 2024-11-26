@@ -16,7 +16,6 @@ import com.sportus.be.user.domain.User;
 import com.sportus.be.user.domain.type.Provider;
 import com.sportus.be.user.exception.UserNotFoundException;
 import com.sportus.be.user.repository.UserRepository;
-import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -65,12 +64,14 @@ public class AuthService {
     }
 
     public SelfLoginResponse signIn(
-            SignInRequest signUpRequest, HttpServletResponse response
+            SignInRequest signUpRequest
     ) {
-        return loginService.login(signUpRequest.email(), signUpRequest.password(), response);
+        return loginService.login(signUpRequest.email(), signUpRequest.password());
     }
 
-    public ReissueTokenResponse reIssueToken(String refreshToken, HttpServletResponse response) {
+    public ReissueTokenResponse reIssueToken(String refreshToken) {
+
+        refreshToken = resolveToken(refreshToken);
 
         if (!jwtTokenProvider.validateToken(refreshToken)) {
             throw new TokenNotValidException(AuthErrorCode.TOKEN_NOT_VALID);
@@ -79,9 +80,16 @@ public class AuthService {
         User user = jwtTokenProvider.getUser(refreshToken);
 
         String accessToken = jwtTokenProvider.createAccessToken(user);
-        jwtTokenProvider.createRefreshToken(user, response);
+        String newRefreshToken = jwtTokenProvider.createRefreshToken(user);
 
-        return ReissueTokenResponse.from(accessToken);
+        return ReissueTokenResponse.from(accessToken, newRefreshToken);
+    }
+
+    private String resolveToken(String token) {
+        if (token != null && token.startsWith("Bearer ")) {
+            return token.substring(7);
+        }
+        throw new TokenNotValidException(AuthErrorCode.TOKEN_NOT_VALID);
     }
 
     @Transactional
