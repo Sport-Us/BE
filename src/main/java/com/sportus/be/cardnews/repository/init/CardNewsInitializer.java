@@ -32,36 +32,37 @@ public class CardNewsInitializer implements ApplicationRunner {
             List<CardNews> cardNewsList = new ArrayList<>();
 
             CardNews cardNews1 = CardNews.builder()
-                    .title("생애주기 운동백서 - 5세 이상 어린이")
+                    .title("생애주기 운동백서 - 5세 이상 어린이에게 적합한 실내 운동 편")
                     .build();
 
             CardNews cardNews2 = CardNews.builder()
-                    .title("생애주기 운동백서 - 만성 질환이 있는 겅인과 노인")
+                    .title("생애주기 운동백서 - 만성 질환이 있는 성인과 노인에게 적합한 신체활동")
                     .build();
 
             CardNews cardNews3 = CardNews.builder()
-                    .title("생애주기 운동백서 - 신체적 장애를 가진 성인")
+                    .title("생애주기 운동백서 - 신체적 장애를 가진 성인에게 적합한 신체활동")
                     .build();
 
             CardNews cardNews4 = CardNews.builder()
-                    .title("생애주기 운동백서 - 성장기인 청소년")
+                    .title("생애주기 운동백서 - 성장기인 청소년에게 적합한 운동 편")
                     .build();
 
             CardNews cardNews5 = CardNews.builder()
-                    .title("생애주기 운동백서 - 임산부")
+                    .title("생애주기 운동백서 - 임산부에게 적합한 신체활동 편")
                     .build();
 
             CardNews cardNews6 = CardNews.builder()
-                    .title("생애주기 운동백서 - 65세 이상 노인")
+                    .title("생애주기 운동백서 - 65세 이상 노인이 가볍게 할 수 있는 운동 편")
                     .build();
 
             CardNews cardNews7 = CardNews.builder()
-                    .title("생애주기 운동백서 - 활동량이 많은 어린이")
+                    .title("생애주기 운동백서 - 활동량이 많은 어린이를 위한 운동 편")
                     .build();
 
             CardNews cardNews8 = CardNews.builder()
-                    .title("생애주기 운동백서 - 운동이 부족한 직장인")
+                    .title("생애주기 운동백서 - 운동이 부족한 직장인을 위한 맞춤형 운동 편")
                     .build();
+
             cardNewsList.add(cardNews1);
             cardNewsList.add(cardNews2);
             cardNewsList.add(cardNews3);
