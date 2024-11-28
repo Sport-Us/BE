@@ -5,6 +5,7 @@ import com.sportus.be.place.domain.Place;
 import com.sportus.be.user.domain.User;
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -12,5 +13,8 @@ public interface BookMarkRepository extends JpaRepository<BookMark, Long>, BookM
 
     Optional<BookMark> findByUserAndPlace(User user, Place place);
 
-    Long countBookMarkByUserId(Long userId);
+    @Query("SELECT COALESCE(MAX(id), 0) AS lastBookMarkId "
+            + "FROM BookMark "
+            + "WHERE user.id = :userId")
+    Long findLastBookMarkByUserId(Long userId);
 }

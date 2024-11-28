@@ -53,7 +53,7 @@ public class BookMarkService {
 
     public BookMarkPlaceResponseList getMyBookMark(Long userId, Long lastBookMarkId, Long size) {
         if (lastBookMarkId == 0) {
-            lastBookMarkId = bookMarkRepository.countBookMarkByUserId(userId) + 1;
+            lastBookMarkId = bookMarkRepository.findLastBookMarkByUserId(userId) + 1;
         }
 
         List<BookMarkPlaceResponse> bookMarkList = bookMarkRepository.getBookMarkList(userId, lastBookMarkId, size);
