@@ -34,8 +34,20 @@ public class AIServiceFacade {
     private SearchPlaceResponseList searchFacilities(double longitude, double latitude,
                                                      ClovaAnalysisResponse recommendation) {
         List<FacilityCategory> categories = recommendation.categories().stream()
+                .filter(category -> {
+                    try {
+                        FacilityCategory.valueOf(category);
+                        return true;
+                    } catch (IllegalArgumentException e) {
+                        return false; // 유효하지 않은 값은 무시
+                    }
+                })
                 .map(FacilityCategory::valueOf)
                 .toList();
+
+        if (categories.isEmpty()) {
+            categories = List.of(FacilityCategory.ALL);
+        }
 
         return placeService.searchFacilityPlaces(
                 longitude, latitude, 100000, categories, SortType.DISTANCE_ASC, "", 0, 10);
@@ -44,8 +56,20 @@ public class AIServiceFacade {
     private SearchPlaceResponseList searchLectures(double longitude, double latitude,
                                                    ClovaAnalysisResponse recommendation) {
         List<LectureCategory> categories = recommendation.categories().stream()
+                .filter(category -> {
+                    try {
+                        LectureCategory.valueOf(category);
+                        return true;
+                    } catch (IllegalArgumentException e) {
+                        return false; // 유효하지 않은 값은 무시
+                    }
+                })
                 .map(LectureCategory::valueOf)
                 .toList();
+
+        if (categories.isEmpty()) {
+            categories = List.of(LectureCategory.ALL);
+        }
 
         return placeService.searchLecturePlaces(
                 longitude, latitude, 100000, categories, SortType.DISTANCE_ASC, "", 0, 10);
