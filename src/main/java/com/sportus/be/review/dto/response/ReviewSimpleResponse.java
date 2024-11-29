@@ -7,6 +7,7 @@ import java.time.LocalDateTime;
 
 public record ReviewSimpleResponse(
         Long reviewId,
+        String placeName,
         String writer,
         String content,
         BigDecimal rating,

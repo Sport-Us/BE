@@ -134,6 +134,7 @@ public class PlaceRepositoryImpl implements PlaceRepositoryCustom {
         List<ReviewSimpleResponse> recentReviews = jpaQueryFactory
                 .select(Projections.constructor(ReviewSimpleResponse.class,
                         review.id,
+                        review.place.name,
                         review.user.nickname,
                         review.content,
                         review.rating,
@@ -142,6 +143,7 @@ public class PlaceRepositoryImpl implements PlaceRepositoryCustom {
                 ))
                 .from(review)
                 .leftJoin(review.user)
+                .leftJoin(review.place)
                 .where(review.place.id.eq(placeId))
                 .orderBy(review.date.desc())
                 .limit(size + 1)

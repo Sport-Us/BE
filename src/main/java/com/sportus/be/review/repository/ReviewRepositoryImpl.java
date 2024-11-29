@@ -21,6 +21,7 @@ public class ReviewRepositoryImpl implements ReviewRepositoryCustom {
         return jpaQueryFactory.select(
                         Projections.constructor(ReviewSimpleResponse.class,
                                 review.id,
+                                review.place.name,
                                 review.user.nickname,
                                 review.content,
                                 review.rating,
@@ -29,6 +30,7 @@ public class ReviewRepositoryImpl implements ReviewRepositoryCustom {
                         )
                 )
                 .from(review)
+                .leftJoin(review.place)
                 .where(review.place.id.eq(placeId), review.id.lt(lastReviewId)) // lastReviewId를 기준으로 필터링
                 .orderBy(review.id.desc())
                 .limit(size + 1) // 가져올 리뷰 수 제한
@@ -40,6 +42,7 @@ public class ReviewRepositoryImpl implements ReviewRepositoryCustom {
         // 리뷰를 최신 5개만 가져오기 위한 서브쿼리
         return jpaQueryFactory.select(Projections.constructor(ReviewSimpleResponse.class,
                         review.id,
+                        review.place.name,
                         review.user.nickname,
                         review.content,
                         review.rating,
@@ -48,6 +51,7 @@ public class ReviewRepositoryImpl implements ReviewRepositoryCustom {
                 ))
                 .from(review)
                 .leftJoin(review.user)
+                .leftJoin(review.place)
                 .where(review.user.id.eq(userId))
                 .orderBy(review.date.desc())
                 .limit(5)
@@ -59,6 +63,7 @@ public class ReviewRepositoryImpl implements ReviewRepositoryCustom {
         return jpaQueryFactory.select(
                         Projections.constructor(ReviewSimpleResponse.class,
                                 review.id,
+                                review.place.name,
                                 review.user.nickname,
                                 review.content,
                                 review.rating,
@@ -67,6 +72,7 @@ public class ReviewRepositoryImpl implements ReviewRepositoryCustom {
                         )
                 )
                 .from(review)
+                .leftJoin(review.place)
                 .where(review.user.id.eq(userId), review.id.lt(lastReviewId)) // lastReviewId를 기준으로 필터링
                 .orderBy(review.id.desc())
                 .limit(size) // 가져올 리뷰 수 제한
