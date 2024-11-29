@@ -136,6 +136,7 @@ public class PlaceRepositoryImpl implements PlaceRepositoryCustom {
                         review.id,
                         review.place.name,
                         review.user.nickname,
+                        review.user.profileImageUrl,
                         review.content,
                         review.rating,
                         review.date,

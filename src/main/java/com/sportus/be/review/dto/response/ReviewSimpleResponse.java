@@ -9,6 +9,7 @@ public record ReviewSimpleResponse(
         Long reviewId,
         String placeName,
         String writer,
+        String writerImageUrl,
         String content,
         BigDecimal rating,
         @JsonFormat(pattern = "yyyy-MM-dd")
