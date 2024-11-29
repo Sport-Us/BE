@@ -6,6 +6,7 @@ import com.sportus.be.place.domain.type.FacilityCategory;
 import com.sportus.be.place.domain.type.LectureCategory;
 import com.sportus.be.place.dto.response.SearchPlaceResponseList;
 import com.sportus.be.recommend.dto.response.ClovaAnalysisResponse;
+import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -46,7 +47,7 @@ public class AIServiceFacade {
                 .toList();
 
         if (categories.isEmpty()) {
-            categories = List.of(FacilityCategory.ALL);
+            categories = new ArrayList<>(List.of(FacilityCategory.ALL));
         }
 
         return placeService.searchFacilityPlaces(
@@ -68,7 +69,7 @@ public class AIServiceFacade {
                 .toList();
 
         if (categories.isEmpty()) {
-            categories = List.of(LectureCategory.ALL);
+            categories = new ArrayList<>(List.of(LectureCategory.ALL));
         }
 
         return placeService.searchLecturePlaces(
