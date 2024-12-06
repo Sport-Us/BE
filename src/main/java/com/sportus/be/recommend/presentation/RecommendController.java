@@ -37,7 +37,8 @@ public class RecommendController {
     public ResponseEntity<ResponseTemplate<?>> recommendFacilities(
             @AuthenticationPrincipal Long userId,
             @RequestParam Double longitude,
-            @RequestParam Double latitude) {
+            @RequestParam Double latitude
+    ) {
 
         SearchPlaceResponseList nearestPlaces =
                 aiServiceFacade.searchRecommendPlaces(userId, true, longitude, latitude);
@@ -54,7 +55,8 @@ public class RecommendController {
     public ResponseEntity<ResponseTemplate<?>> recommendLectures(
             @AuthenticationPrincipal Long userId,
             @RequestParam Double longitude,
-            @RequestParam Double latitude) {
+            @RequestParam Double latitude
+    ) {
 
         SearchPlaceResponseList nearestPlaces =
                 aiServiceFacade.searchRecommendPlaces(userId, false, longitude, latitude);
@@ -64,7 +66,7 @@ public class RecommendController {
                 .body(ResponseTemplate.from(nearestPlaces));
     }
 
-    @Operation(summary = "모든 MongoUser 가져오기", description = "ai 분석을 위해 사용하니 신경쓰지 않으셔도 됩니다!")
+    @Operation(summary = "MongoUser 가져오기", description = "ai 분석을 위해 사용하니 신경쓰지 않으셔도 됩니다!")
     @PostMapping("/mongo-users")
     public MongoUserResponseList getAllMongoUsers(
             @RequestBody OnboardingAnalysisInfoList onboardingInfos

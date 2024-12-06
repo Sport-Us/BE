@@ -3,6 +3,7 @@ package com.sportus.be.user.domain;
 import com.sportus.be.user.domain.type.Gender;
 import com.sportus.be.user.domain.type.Provider;
 import com.sportus.be.user.domain.type.Role;
+import com.sportus.be.user.dto.request.UpdateProfileRequest;
 import com.sportus.be.user.dto.request.UserOnboardingRequest;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -89,5 +90,15 @@ public class User {
             this.onboardingList.add(onboarding);
             this.isOnboarded = true;
         });
+    }
+
+    public void updateProfile(UpdateProfileRequest request, String profileImageUrl) {
+        if(!request.nickname().isEmpty()) {
+            this.nickname = request.nickname();
+        }
+
+        if (!profileImageUrl.isEmpty()) {
+            this.profileImageUrl = profileImageUrl;
+        }
     }
 }

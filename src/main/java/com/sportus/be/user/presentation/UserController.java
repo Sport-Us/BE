@@ -6,21 +6,27 @@ import com.sportus.be.global.dto.ResponseTemplate;
 import com.sportus.be.review.application.ReviewService;
 import com.sportus.be.review.dto.response.ReviewSimpleResponseList;
 import com.sportus.be.user.application.UserService;
+import com.sportus.be.user.dto.request.UpdateProfileRequest;
 import com.sportus.be.user.dto.request.UserOnboardingRequestList;
 import com.sportus.be.user.dto.response.MypageResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 @Tag(name = "User", description = "유저 관련 API")
 @Slf4j
@@ -94,5 +100,19 @@ public class UserController {
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(ResponseTemplate.from(responseList));
+    }
+
+    @Operation(summary = "프로필 수정", description = "프로필 수정 기능")
+    @PutMapping(value = "/profile", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE, MediaType.APPLICATION_JSON_VALUE})
+    public ResponseEntity<ResponseTemplate<?>> updateProfile(
+            @AuthenticationPrincipal Long userId,
+            @Valid @RequestPart UpdateProfileRequest request,
+            @RequestPart(required = false) MultipartFile file) {
+
+        userService.updateProfile(userId, request, file);
+
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(ResponseTemplate.EMPTY_RESPONSE);
     }
 }
