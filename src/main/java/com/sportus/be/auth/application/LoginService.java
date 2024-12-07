@@ -5,6 +5,7 @@ import static com.sportus.be.user.exception.errorcode.UserErrorCode.USER_NOT_FOU
 import com.sportus.be.auth.dto.response.SelfLoginResponse;
 import com.sportus.be.auth.util.JwtTokenProvider;
 import com.sportus.be.user.domain.User;
+import com.sportus.be.user.domain.type.Provider;
 import com.sportus.be.user.exception.UserNotFoundException;
 import com.sportus.be.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -24,7 +25,7 @@ public class LoginService {
     public SelfLoginResponse login(
             String email, String password
     ) {
-        User user = userService.findByEmail(email)
+        User user = userService.findByEmailAndProvider(email, Provider.SELF)
                 .orElseThrow(() -> new UserNotFoundException(USER_NOT_FOUND));
 
         if (!passwordEncoder.matches(password, user.getPassword())) {
