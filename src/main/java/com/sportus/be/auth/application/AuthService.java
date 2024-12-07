@@ -13,7 +13,6 @@ import com.sportus.be.auth.exception.errorcode.AuthErrorCode;
 import com.sportus.be.auth.util.JwtTokenProvider;
 import com.sportus.be.global.application.AWSStorageService;
 import com.sportus.be.user.domain.User;
-import com.sportus.be.user.domain.type.Provider;
 import com.sportus.be.user.exception.UserNotFoundException;
 import com.sportus.be.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -45,7 +44,7 @@ public class AuthService {
     }
 
     public void signUp(CreateUserRequest request, MultipartFile file) {
-        if (!userRepository.existsByEmailAndProvider(request.email(), Provider.SELF)) {
+        if (!userRepository.existsByEmail(request.email())) {
             String imagePath = "https://" + bucket + ".s3.ap-northeast-2.amazonaws.com" + DUMMY_PROFILE_IMAGE_URL;
 
             if (file != null) {
