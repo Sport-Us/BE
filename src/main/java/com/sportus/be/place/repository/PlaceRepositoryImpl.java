@@ -134,6 +134,7 @@ public class PlaceRepositoryImpl implements PlaceRepositoryCustom {
         List<ReviewSimpleResponse> recentReviews = jpaQueryFactory
                 .select(Projections.constructor(ReviewSimpleResponse.class,
                         review.id,
+                        review.place.id,
                         review.place.name,
                         review.user.nickname,
                         review.user.profileImageUrl,

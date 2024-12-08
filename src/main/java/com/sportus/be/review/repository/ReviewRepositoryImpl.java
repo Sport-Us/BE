@@ -21,6 +21,7 @@ public class ReviewRepositoryImpl implements ReviewRepositoryCustom {
         return jpaQueryFactory.select(
                         Projections.constructor(ReviewSimpleResponse.class,
                                 review.id,
+                                review.place.id,
                                 review.place.name,
                                 review.user.nickname,
                                 review.user.profileImageUrl,
@@ -43,6 +44,7 @@ public class ReviewRepositoryImpl implements ReviewRepositoryCustom {
         // 리뷰를 최신 5개만 가져오기 위한 서브쿼리
         return jpaQueryFactory.select(Projections.constructor(ReviewSimpleResponse.class,
                         review.id,
+                        review.place.id,
                         review.place.name,
                         review.user.nickname,
                         review.user.profileImageUrl,
@@ -65,6 +67,7 @@ public class ReviewRepositoryImpl implements ReviewRepositoryCustom {
         return jpaQueryFactory.select(
                         Projections.constructor(ReviewSimpleResponse.class,
                                 review.id,
+                                review.place.id,
                                 review.place.name,
                                 review.user.nickname,
                                 review.user.profileImageUrl,
