@@ -85,13 +85,12 @@ public class JwtTokenProvider {
 
     public boolean validateToken(final String token) {
         try {
-            log.info("now date: {}", new Date());
             Jws<Claims> claims = Jwts.parserBuilder()
                     .setSigningKey(key)
                     .build()
                     .parseClaimsJws(token);
 
-            log.info("expire date: {}", claims.getBody().getExpiration());
+            log.info("login user: {}", claims.getBody().getSubject());
             return claims.getBody().getExpiration().after(new Date());
         } catch (Exception e) {
             log.error("Token validation error: ", e);
