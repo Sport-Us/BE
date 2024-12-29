@@ -7,7 +7,6 @@ import com.sportus.be.review.application.ReviewService;
 import com.sportus.be.review.dto.response.ReviewSimpleResponseList;
 import com.sportus.be.user.application.UserService;
 import com.sportus.be.user.dto.request.UpdateProfileRequest;
-import com.sportus.be.user.dto.request.UserOnboardingRequestList;
 import com.sportus.be.user.dto.response.MypageResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -49,11 +48,11 @@ public class UserController {
                     "PURPOSE: 다이어트, 근육 강화, 취미 및 여가 활동, 재활, 스트레스 해소, 대회 준비")
     @PostMapping("/onboarding")
     public ResponseEntity<ResponseTemplate<?>> onboarding(
-            @AuthenticationPrincipal Long userId,
-            @RequestBody UserOnboardingRequestList userOnboardingRequestList
+            @AuthenticationPrincipal Long userId
+//            @RequestBody UserOnboardingRequestList userOnboardingRequestList
     ) {
 
-        userService.onboarding(userId, userOnboardingRequestList);
+//        userService.onboarding(userId, userOnboardingRequestList);
 
         return ResponseEntity
                 .status(HttpStatus.OK)

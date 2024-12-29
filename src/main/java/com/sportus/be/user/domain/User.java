@@ -4,7 +4,6 @@ import com.sportus.be.user.domain.type.Gender;
 import com.sportus.be.user.domain.type.Provider;
 import com.sportus.be.user.domain.type.Role;
 import com.sportus.be.user.dto.request.UpdateProfileRequest;
-import com.sportus.be.user.dto.request.UserOnboardingRequest;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -82,14 +81,6 @@ public class User {
         this.gender = gender;
         this.isOnboarded = isOnboarded;
         this.role = role;
-    }
-
-    public void onboarding(List<UserOnboardingRequest> userOnboardingRequestList) {
-        userOnboardingRequestList.forEach(userOnboardingRequest -> {
-            Onboarding onboarding = userOnboardingRequest.toEntity(this);
-            this.onboardingList.add(onboarding);
-            this.isOnboarded = true;
-        });
     }
 
     public void updateProfile(UpdateProfileRequest request, String profileImageUrl) {

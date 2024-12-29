@@ -10,7 +10,6 @@ import com.sportus.be.global.exception.response.ErrorResponse;
 import com.sportus.be.global.exception.response.ErrorResponse.ValidationError;
 import com.sportus.be.global.exception.response.ErrorResponse.ValidationErrors;
 import com.sportus.be.place.exception.PlaceNotFoundException;
-import com.sportus.be.recommend.exception.MongoUserNotFoundException;
 import com.sportus.be.review.exception.CanNotDeleteReviewException;
 import com.sportus.be.review.exception.ReviewNotFoundException;
 import com.sportus.be.user.exception.UserNotFoundException;
@@ -52,12 +51,6 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(UserNotFoundException.class)
     public ResponseEntity<Object> handleUserNotFound(UserNotFoundException e, HttpServletRequest request) {
-        logInfo(e.getErrorCode(), e, request);
-        return handleExceptionInternal(e.getErrorCode());
-    }
-
-    @ExceptionHandler(MongoUserNotFoundException.class)
-    public ResponseEntity<Object> handleMongoUserNotFound(MongoUserNotFoundException e, HttpServletRequest request) {
         logInfo(e.getErrorCode(), e, request);
         return handleExceptionInternal(e.getErrorCode());
     }

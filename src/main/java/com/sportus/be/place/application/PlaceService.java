@@ -12,8 +12,6 @@ import com.sportus.be.place.exception.PlaceNotFoundException;
 import com.sportus.be.place.exception.errorcode.PlaceErrorCode;
 import com.sportus.be.place.repository.PlaceRepository;
 import com.sportus.be.place.repository.mongo.MongoPlaceRepository;
-import com.sportus.be.recommend.domain.MongoAISearchInfo;
-import com.sportus.be.recommend.domain.MongoUser;
 import java.util.List;
 import java.util.stream.Stream;
 import lombok.RequiredArgsConstructor;
@@ -147,13 +145,6 @@ public class PlaceService {
 
         // 중복된 AISearchInfo 추가를 방지하기 위한 로직
         query.addCriteria(Criteria.where("aiSearchInfoList.placeId").ne(placeId)); // 중복 확인
-
-        // AISearchInfo 추가
-        MongoAISearchInfo aiSearchInfo = MongoAISearchInfo.of(placeId, isFacility, category);
-        update.push("aiSearchInfoList", aiSearchInfo); // 리스트에 추가
-
-        // 업데이트 수행
-        mongoTemplate.updateFirst(query, update, MongoUser.class);
     }
 
     // 특정 장소 정보 조회
