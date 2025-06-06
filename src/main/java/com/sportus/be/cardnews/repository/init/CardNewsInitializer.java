@@ -52,7 +52,7 @@ public class CardNewsInitializer implements ApplicationRunner {
                     .build();
 
             CardNews cardNews6 = CardNews.builder()
-                    .title("생애주기 운동백서 - 65세 이상 노인이 가볍게 할 수 있는 운동 편")
+                    .title("생애주기 운동백서 - 만성 질환이 있는 성인과 노인 편")
                     .build();
 
             CardNews cardNews7 = CardNews.builder()
